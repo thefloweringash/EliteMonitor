@@ -8,12 +8,22 @@
 import SwiftUI
 
 struct ContentView: View {
+  @State var viewModel = JournalViewModel()
+
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+          List {
+            ForEach(viewModel.events, id: \.0) { event in
+              VStack(alignment: .leading) {
+                Text(event.1.type)
+                Text(event.1.timestamp.formatted())
+              }
+            }
+          }
+          .defaultScrollAnchor(.bottom)
+        }
+        .task {
+          await viewModel.monitor()
         }
         .padding()
     }
