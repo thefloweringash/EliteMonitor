@@ -1,5 +1,5 @@
 //
-//  EliteJournal.swift
+//  EliteJournalWatcher.swift
 //  EliteMonitor
 //
 //  Created by Andrew Childs on 2025/02/08.
@@ -9,7 +9,7 @@ import Dispatch
 import Foundation
 import System
 
-final class EliteJournal {
+final class EliteJournalWatcher {
   typealias EventStream = AsyncThrowingStream<[JournalEvent], any Error>
 
   enum Errors: Error {
@@ -20,7 +20,9 @@ final class EliteJournal {
     "/Applications/Steam-vk.app/Contents/SharedSupport/prefix/drive_c/users/Kegworks/Saved Games/Frontier Developments/Elite Dangerous"
   }
 
-  private static let shared = EliteJournal()
+  deinit {
+    fatalError()
+  }
 
   private static let queue = DispatchQueue(label: "nz.org.cons.elite-journal-events")
 
@@ -97,6 +99,8 @@ final class EliteJournal {
     let fileFD: FileDescriptor
     let path: String
 
+    print("Directory changed, looking for new journal file")
+
     do {
       guard let latestJournal =
         try FileManager.default.contentsOfDirectory(atPath: Self.containerDirectory.string)
@@ -154,11 +158,14 @@ final class EliteJournal {
       try buffer.fill {
         try openJournal.1.read(into: $0)
       } onChunk: { data in
-        let json = (try! JSONSerialization.jsonObject(with: data)) as! [String: Any]
-        let timestamp = ISO8601DateFormatter().date(from: json["timestamp"] as! String)!
-        let event = json["event"] as! String
-
-        events.append(JournalEvent(timestamp: timestamp, type: event, _raw: json))
+        do {
+          let decoder = JSONDecoder()
+          decoder.dateDecodingStrategy = .iso8601
+          let event = try decoder.decode(JournalEvent.self, from: data)
+          events.append(event)
+        } catch {
+          assertionFailure("Error decoding event: \(error)")
+        }
       }
       continuation.yield(events)
     } catch {
@@ -167,6 +174,6 @@ final class EliteJournal {
   }
 
   public static func events() -> EventStream {
-    shared.events()
+    Self().events()
   }
 }

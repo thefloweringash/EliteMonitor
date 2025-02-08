@@ -1,0 +1,1260 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Alloys" : {
+
+    },
+    "Capacitors" : {
+
+    },
+    "Chemical" : {
+
+    },
+    "CMDR %@" : {
+
+    },
+    "CMDR Jameson" : {
+
+    },
+    "Composite" : {
+
+    },
+    "Conductive" : {
+
+    },
+    "Crystals" : {
+
+    },
+    "Data Archives" : {
+
+    },
+    "Emission Data" : {
+
+    },
+    "Encoded Firmware" : {
+
+    },
+    "Encryption Files" : {
+
+    },
+    "Events" : {
+
+    },
+    "G%lld" : {
+
+    },
+    "Heat" : {
+
+    },
+    "material.encoded.adaptiveencryptors" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adaptive Encryptors Capture"
+          }
+        }
+      }
+    },
+    "material.encoded.ancientbiologicaldata" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pattern Alpha Obelisk Data"
+          }
+        }
+      }
+    },
+    "material.encoded.ancientculturaldata" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pattern Beta Obelisk Data"
+          }
+        }
+      }
+    },
+    "material.encoded.ancienttechnologicaldata" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pattern Epsilon Obelisk Data"
+          }
+        }
+      }
+    },
+    "material.encoded.archivedemissiondata" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Irregular Emission Data"
+          }
+        }
+      }
+    },
+    "material.encoded.bulkscandata" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anomalous Bulk Scan Data"
+          }
+        }
+      }
+    },
+    "material.encoded.classifiedscandata" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Classified Scan Fragment"
+          }
+        }
+      }
+    },
+    "material.encoded.compactemissionsdata" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abnormal Compact Emissions Data"
+          }
+        }
+      }
+    },
+    "material.encoded.consumerfirmware" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modified Consumer Firmware"
+          }
+        }
+      }
+    },
+    "material.encoded.dataminedwake" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datamined Wake Exceptions"
+          }
+        }
+      }
+    },
+    "material.encoded.decodedemissiondata" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Decoded Emission Data"
+          }
+        }
+      }
+    },
+    "material.encoded.disruptedwakeechoes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atypical Disrupted Wake Echoes"
+          }
+        }
+      }
+    },
+    "material.encoded.embeddedfirmware" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modified Embedded Firmware"
+          }
+        }
+      }
+    },
+    "material.encoded.emissiondata" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unexpected Emission Data"
+          }
+        }
+      }
+    },
+    "material.encoded.encodedscandata" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Divergent Scan Data"
+          }
+        }
+      }
+    },
+    "material.encoded.encryptedfiles" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unusual Encrypted Files"
+          }
+        }
+      }
+    },
+    "material.encoded.encryptionarchives" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atypical Encryption Archives"
+          }
+        }
+      }
+    },
+    "material.encoded.encryptioncodes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tagged Encryption Codes"
+          }
+        }
+      }
+    },
+    "material.encoded.fsdtelemetry" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anomalous FSD Telemetry"
+          }
+        }
+      }
+    },
+    "material.encoded.guardian_moduleblueprint" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardian Module Blueprint Fragment"
+          }
+        }
+      }
+    },
+    "material.encoded.hyperspacetrajectories" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eccentric Hyperspace Trajectories"
+          }
+        }
+      }
+    },
+    "material.encoded.industrialfirmware" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cracked Industrial Firmware"
+          }
+        }
+      }
+    },
+    "material.encoded.legacyfirmware" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Specialised Legacy Firmware"
+          }
+        }
+      }
+    },
+    "material.encoded.scanarchives" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unidentified Scan Archives"
+          }
+        }
+      }
+    },
+    "material.encoded.scandatabanks" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Classified Scan Databanks"
+          }
+        }
+      }
+    },
+    "material.encoded.scrambledemissiondata" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exceptional Scrambled Emission Data"
+          }
+        }
+      }
+    },
+    "material.encoded.securityfirmware" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Security Firmware Patch"
+          }
+        }
+      }
+    },
+    "material.encoded.shieldcyclerecordings" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distorted Shield Cycle Recordings"
+          }
+        }
+      }
+    },
+    "material.encoded.shielddensityreports" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Untypical Shield Scans"
+          }
+        }
+      }
+    },
+    "material.encoded.shieldfrequencydata" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peculiar Shield Frequency Data"
+          }
+        }
+      }
+    },
+    "material.encoded.shieldpatternanalysis" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aberrant Shield Pattern Analysis"
+          }
+        }
+      }
+    },
+    "material.encoded.shieldsoakanalysis" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inconsistent Shield Soak Analysis"
+          }
+        }
+      }
+    },
+    "material.encoded.symmetrickeys" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Symmetric Keys"
+          }
+        }
+      }
+    },
+    "material.encoded.wakesolutions" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strange Wake Solutions"
+          }
+        }
+      }
+    },
+    "material.manufactured.basicconductors" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Basic Conductors"
+          }
+        }
+      }
+    },
+    "material.manufactured.biotechconductors" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biotech Conductors"
+          }
+        }
+      }
+    },
+    "material.manufactured.chemicaldistillery" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chemical Distillery"
+          }
+        }
+      }
+    },
+    "material.manufactured.chemicalmanipulators" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chemical Manipulators"
+          }
+        }
+      }
+    },
+    "material.manufactured.chemicalprocessors" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chemical Processors"
+          }
+        }
+      }
+    },
+    "material.manufactured.chemicalstorageunits" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chemical Storage Units"
+          }
+        }
+      }
+    },
+    "material.manufactured.compactcomposites" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compact Composites"
+          }
+        }
+      }
+    },
+    "material.manufactured.compoundshielding" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compound Shielding"
+          }
+        }
+      }
+    },
+    "material.manufactured.conductiveceramics" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conductive Ceramics"
+          }
+        }
+      }
+    },
+    "material.manufactured.conductivecomponents" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conductive Components"
+          }
+        }
+      }
+    },
+    "material.manufactured.conductivepolymers" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conductive Polymers"
+          }
+        }
+      }
+    },
+    "material.manufactured.configurablecomponents" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configurable Components"
+          }
+        }
+      }
+    },
+    "material.manufactured.crystalshards" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crystal Shards"
+          }
+        }
+      }
+    },
+    "material.manufactured.electrochemicalarrays" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Electrochemical Arrays"
+          }
+        }
+      }
+    },
+    "material.manufactured.exquisitefocuscrystals" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exquisite Focus Crystals"
+          }
+        }
+      }
+    },
+    "material.manufactured.fedcorecomposites" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Core Dynamics Composites"
+          }
+        }
+      }
+    },
+    "material.manufactured.fedproprietarycomposites" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proprietary Composites"
+          }
+        }
+      }
+    },
+    "material.manufactured.filamentcomposites" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filament Composites"
+          }
+        }
+      }
+    },
+    "material.manufactured.focuscrystals" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Focus Crystals"
+          }
+        }
+      }
+    },
+    "material.manufactured.galvanisingalloys" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Galvanising Alloys"
+          }
+        }
+      }
+    },
+    "material.manufactured.gridresistors" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grid Resistors"
+          }
+        }
+      }
+    },
+    "material.manufactured.guardian_powercell" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardian Power Cell"
+          }
+        }
+      }
+    },
+    "material.manufactured.guardian_powerconduit" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardian Power Conduit"
+          }
+        }
+      }
+    },
+    "material.manufactured.guardian_sentinel_weaponparts" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardian Sentinel Weapon Parts"
+          }
+        }
+      }
+    },
+    "material.manufactured.guardian_sentinel_wreckagecomponents" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardian Wreckage Components"
+          }
+        }
+      }
+    },
+    "material.manufactured.guardian_techcomponent" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardian Technology Component"
+          }
+        }
+      }
+    },
+    "material.manufactured.heatconductionwiring" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heat Conduction Wiring"
+          }
+        }
+      }
+    },
+    "material.manufactured.heatdispersionplate" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heat Dispersion Plate"
+          }
+        }
+      }
+    },
+    "material.manufactured.heatexchangers" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heat Exchangers"
+          }
+        }
+      }
+    },
+    "material.manufactured.heatresistantceramics" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heat Resistant Ceramics"
+          }
+        }
+      }
+    },
+    "material.manufactured.heatvanes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heat Vanes"
+          }
+        }
+      }
+    },
+    "material.manufactured.highdensitycomposites" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "High Density Composites"
+          }
+        }
+      }
+    },
+    "material.manufactured.hybridcapacitors" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hybrid Capacitors"
+          }
+        }
+      }
+    },
+    "material.manufactured.imperialshielding" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imperial Shielding"
+          }
+        }
+      }
+    },
+    "material.manufactured.improvisedcomponents" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Improvised Components"
+          }
+        }
+      }
+    },
+    "material.manufactured.mechanicalcomponents" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mechanical Components"
+          }
+        }
+      }
+    },
+    "material.manufactured.mechanicalequipment" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mechanical Equipment"
+          }
+        }
+      }
+    },
+    "material.manufactured.mechanicalscrap" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mechanical Scrap"
+          }
+        }
+      }
+    },
+    "material.manufactured.militarygradealloys" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Military Grade Alloys"
+          }
+        }
+      }
+    },
+    "material.manufactured.militarysupercapacitors" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Military Supercapacitors"
+          }
+        }
+      }
+    },
+    "material.manufactured.pharmaceuticalisolators" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pharmaceutical Isolators"
+          }
+        }
+      }
+    },
+    "material.manufactured.phasealloys" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phase Alloys"
+          }
+        }
+      }
+    },
+    "material.manufactured.polymercapacitors" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Polymer Capacitors"
+          }
+        }
+      }
+    },
+    "material.manufactured.precipitatedalloys" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Precipitated Alloys"
+          }
+        }
+      }
+    },
+    "material.manufactured.protoheatradiators" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proto Heat Radiators"
+          }
+        }
+      }
+    },
+    "material.manufactured.protolightalloys" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proto Light Alloys"
+          }
+        }
+      }
+    },
+    "material.manufactured.protoradiolicalloys" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proto Radiolic Alloys"
+          }
+        }
+      }
+    },
+    "material.manufactured.refinedfocuscrystals" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refined Focus Crystals"
+          }
+        }
+      }
+    },
+    "material.manufactured.salvagedalloys" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salvaged Alloys"
+          }
+        }
+      }
+    },
+    "material.manufactured.shieldemitters" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shield Emitters"
+          }
+        }
+      }
+    },
+    "material.manufactured.shieldingsensors" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shielding Sensors"
+          }
+        }
+      }
+    },
+    "material.manufactured.temperedalloys" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempered Alloys"
+          }
+        }
+      }
+    },
+    "material.manufactured.thermicalloys" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thermic Alloys"
+          }
+        }
+      }
+    },
+    "material.manufactured.uncutfocuscrystals" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flawed Focus Crystals"
+          }
+        }
+      }
+    },
+    "material.manufactured.wornshieldemitters" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Worn Shield Emitters"
+          }
+        }
+      }
+    },
+    "material.raw.antimony" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antimony"
+          }
+        }
+      }
+    },
+    "material.raw.arsenic" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arsenic"
+          }
+        }
+      }
+    },
+    "material.raw.boron" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Boron"
+          }
+        }
+      }
+    },
+    "material.raw.cadmium" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cadmium"
+          }
+        }
+      }
+    },
+    "material.raw.carbon" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carbon"
+          }
+        }
+      }
+    },
+    "material.raw.chromium" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chromium"
+          }
+        }
+      }
+    },
+    "material.raw.germanium" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Germanium"
+          }
+        }
+      }
+    },
+    "material.raw.iron" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iron"
+          }
+        }
+      }
+    },
+    "material.raw.lead" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lead"
+          }
+        }
+      }
+    },
+    "material.raw.manganese" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manganese"
+          }
+        }
+      }
+    },
+    "material.raw.mercury" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mercury"
+          }
+        }
+      }
+    },
+    "material.raw.molybdenum" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Molybdenum"
+          }
+        }
+      }
+    },
+    "material.raw.nickel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nickel"
+          }
+        }
+      }
+    },
+    "material.raw.niobium" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niobium"
+          }
+        }
+      }
+    },
+    "material.raw.phosphorus" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phosphorus"
+          }
+        }
+      }
+    },
+    "material.raw.polonium" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Polonium"
+          }
+        }
+      }
+    },
+    "material.raw.rhenium" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rhenium"
+          }
+        }
+      }
+    },
+    "material.raw.ruthenium" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ruthenium"
+          }
+        }
+      }
+    },
+    "material.raw.selenium" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selnium"
+          }
+        }
+      }
+    },
+    "material.raw.sulphur" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sulphur"
+          }
+        }
+      }
+    },
+    "material.raw.technetium" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Technetium"
+          }
+        }
+      }
+    },
+    "material.raw.tellurium" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tellerium"
+          }
+        }
+      }
+    },
+    "material.raw.tin" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tin"
+          }
+        }
+      }
+    },
+    "material.raw.tungsten" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tungsten"
+          }
+        }
+      }
+    },
+    "material.raw.vanadium" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vanadium"
+          }
+        }
+      }
+    },
+    "material.raw.yttrium" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yttrium"
+          }
+        }
+      }
+    },
+    "material.raw.zinc" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zinc"
+          }
+        }
+      }
+    },
+    "material.raw.zirconium" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zirconium"
+          }
+        }
+      }
+    },
+    "Materials" : {
+
+    },
+    "Mechanical Components" : {
+
+    },
+    "Raw Material Category 1" : {
+
+    },
+    "Raw Material Category 2" : {
+
+    },
+    "Raw Material Category 3" : {
+
+    },
+    "Raw Material Category 4" : {
+
+    },
+    "Raw Material Category 5" : {
+
+    },
+    "Raw Material Category 6" : {
+
+    },
+    "Raw Material Category 7" : {
+
+    },
+    "Shield Data" : {
+
+    },
+    "Shielding" : {
+
+    },
+    "Thermic" : {
+
+    },
+    "Wake Scans" : {
+
+    }
+  },
+  "version" : "1.0"
+}

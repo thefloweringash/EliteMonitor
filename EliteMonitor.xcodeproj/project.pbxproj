@@ -6,8 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		485262602D57BBAF00075845 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 4852625F2D57BBAF00075845 /* Localizable.xcstrings */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		4852623B2D5719E200075845 /* EliteMonitor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EliteMonitor.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4852625F2D57BBAF00075845 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -32,6 +37,7 @@
 		485262322D5719E200075845 = {
 			isa = PBXGroup;
 			children = (
+				4852625F2D57BBAF00075845 /* Localizable.xcstrings */,
 				4852623D2D5719E200075845 /* EliteMonitor */,
 				4852623C2D5719E200075845 /* Products */,
 			);
@@ -111,6 +117,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				485262602D57BBAF00075845 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -186,6 +193,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -242,6 +250,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
 			name = Release;
 		};
