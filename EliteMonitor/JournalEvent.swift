@@ -1,5 +1,5 @@
 //
-//  EliteEvents.swift
+//  JournalEvent.swift
 //  EliteMonitor
 //
 //  Created by Andrew Childs on 2025/02/08.

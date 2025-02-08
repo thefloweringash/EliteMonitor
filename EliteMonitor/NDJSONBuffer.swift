@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public class NDJSONBuffer {
   var buffer = Data(count: 4096)
   var end: Data.Index
@@ -55,7 +54,7 @@ public class NDJSONBuffer {
       var start = buffer.startIndex
       while
         start < end,
-        let newline  = buffer[start..<end].firstIndex(of: 0x0A)
+        let newline = buffer[start..<end].firstIndex(of: 0x0A)
       {
         #if DEBUG
         print("chunk: \(start)...\(newline)")

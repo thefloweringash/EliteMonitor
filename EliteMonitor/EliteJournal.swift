@@ -5,8 +5,8 @@
 //  Created by Andrew Childs on 2025/02/08.
 //
 
-import Foundation
 import Dispatch
+import Foundation
 import System
 
 final class EliteJournal {
@@ -35,7 +35,7 @@ final class EliteJournal {
 
   private func events() -> EventStream {
     AsyncThrowingStream { continuation in
-      continuation.onTermination = { _term in
+      continuation.onTermination = { _ in
         Self.queue.async {
           self.stopWatching()
         }
@@ -130,13 +130,13 @@ final class EliteJournal {
       try? fileFD.close()
     })
 
-    self.openJournal = (path, fileFD)
+    openJournal = (path, fileFD)
     self.journalChangeSource = journalChangeSource
-    self.buffer.clear()
+    buffer.clear()
 
     journalChangeSource.activate()
 
-    self.readJournal(fileName: path)
+    readJournal(fileName: path)
   }
 
   private func terminate(throwing error: any Error) {
@@ -167,6 +167,6 @@ final class EliteJournal {
   }
 
   public static func events() -> EventStream {
-    return shared.events()
+    shared.events()
   }
 }
