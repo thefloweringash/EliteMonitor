@@ -124,6 +124,9 @@ final class EliteJournalWatcher {
       return
     }
 
+    self.journalChangeSource?.cancel()
+    self.journalChangeSource = nil
+
     let journalChangeSource = DispatchSource.makeReadSource(fileDescriptor: fileFD.rawValue, queue: Self.queue)
 
     journalChangeSource.setEventHandler(handler: .init { [weak self] in
