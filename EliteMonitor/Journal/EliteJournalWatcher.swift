@@ -10,7 +10,8 @@ import Foundation
 import System
 
 final class EliteJournalWatcher {
-  typealias EventStream = AsyncThrowingStream<[JournalEvent], any Error>
+  typealias EventBundle = ([JournalEvent], Bool)
+  typealias EventStream = AsyncThrowingStream<EventBundle, any Error>
 
   enum Errors: Error {
     case fileOpenFailed
@@ -130,7 +131,7 @@ final class EliteJournalWatcher {
     let journalChangeSource = DispatchSource.makeReadSource(fileDescriptor: fileFD.rawValue, queue: Self.queue)
 
     journalChangeSource.setEventHandler(handler: .init { [weak self] in
-      self?.readJournal(fileName: path)
+      self?.readJournal(fileName: path, live: true)
     })
 
     journalChangeSource.setCancelHandler(handler: .init {
@@ -143,7 +144,7 @@ final class EliteJournalWatcher {
 
     journalChangeSource.activate()
 
-    readJournal(fileName: path)
+    readJournal(fileName: path, live: false)
   }
 
   private func terminate(throwing error: any Error) {
@@ -154,7 +155,7 @@ final class EliteJournalWatcher {
     journalChangeSource = nil
   }
 
-  private func readJournal(fileName: String) {
+  private func readJournal(fileName: String, live: Bool) {
     guard let openJournal, openJournal.0 == fileName, let continuation else { return }
     do {
       var events: [JournalEvent] = []
@@ -170,7 +171,7 @@ final class EliteJournalWatcher {
           assertionFailure("Error decoding event: \(error)")
         }
       }
-      continuation.yield(events)
+      continuation.yield((events, live))
     } catch {
       terminate(throwing: error)
     }

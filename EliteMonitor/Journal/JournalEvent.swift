@@ -8,23 +8,23 @@
 import Foundation
 
 struct JournalEvent: Decodable, Sendable {
-  let timestamp: Date
-  let type: String
-
+  let metadata: EventMetadata
   let details: (any Sendable)?
 
-  public init(from coder: Decoder) throws {
-    let metadata = try EventMetadata(from: coder)
+  var type: String { metadata.event }
+  var timestamp: Date { metadata.timestamp }
 
-    timestamp = metadata.timestamp
-    type = metadata.event
+  public init(from coder: Decoder) throws {
+    metadata = try EventMetadata(from: coder)
 
     switch metadata.event {
-    case "Materials":
-      details = try MaterialsDetails(from: coder)
+      // Disabled while we think about how to represent materials, because there are materials that we don't know about.
 
-    case "MaterialCollected":
-      details = try MaterialCollectedDetails(from: coder)
+//    case "Materials":
+//      details = try MaterialsDetails(from: coder)
+//
+//    case "MaterialCollected":
+//      details = try MaterialCollectedDetails(from: coder)
 
     case "Docked":
       details = try DockedDetails(from: coder)
@@ -34,6 +34,18 @@ struct JournalEvent: Decodable, Sendable {
 
     case "Commander":
       details = try CommanderDetails(from: coder)
+
+    case "CarrierJumpRequest":
+      details = try CarrierJumpRequestDetails(from: coder)
+
+    case "CarrierJump":
+      details = try CarrierJumpDetails(from: coder)
+
+    case "CarrierStats":
+      details = try CarrierStatsDetails(from: coder)
+
+    case "CarrierLocation":
+      details = try CarrierLocationDetails(from: coder)
 
     case "StartJump":
       fallthrough
@@ -209,5 +221,72 @@ struct CommanderDetails: Decodable {
 
   private enum CodingKeys: String, CodingKey {
     case name = "Name"
+  }
+}
+
+// {
+//  "timestamp": "2025-03-30T04:03:31Z",
+//  "event": "CarrierJumpRequest",
+//  "CarrierID": 3700619264,
+//  "SystemName": "HD 104785",
+//  "Body": "HD 104785",
+//  "SystemAddress": 85063078562,
+//  "BodyID": 0,
+//  "DepartureTime": "2025-03-30T04:19:10Z"
+// }
+struct CarrierJumpRequestDetails: Decodable {
+  let departureTime: Date
+  let system: String
+  let body: String?
+
+  enum CodingKeys: String, CodingKey {
+    case departureTime = "DepartureTime"
+    case system = "SystemName"
+    case body = "Body"
+  }
+}
+
+struct CarrierJumpDetails: Decodable {
+  let stationName: String
+  let system: String
+  let body: String
+
+  enum CodingKeys: String, CodingKey {
+    case stationName = "StationName"
+    case system = "StarSystem"
+    case body = "Body"
+  }
+}
+
+struct CarrierLocationDetails: Decodable {
+  let system: String
+
+  enum CodingKeys: String, CodingKey {
+    case system = "StarSystem"
+  }
+}
+
+struct CarrierStatsDetails: Decodable {
+  let name: String
+  let callsign: String
+  let fuelLevel: Int
+
+  struct SpaceUsage: Decodable {
+    let totalCapacity: Int
+    let freeSpace: Int
+
+    enum CodingKeys: String, CodingKey {
+      case totalCapacity = "TotalCapacity"
+      case freeSpace = "FreeSpace"
+    }
+  }
+
+  let spaceUsage: SpaceUsage
+
+  enum CodingKeys: String, CodingKey {
+    case name = "Name"
+    case callsign = "Callsign"
+    case fuelLevel = "FuelLevel"
+    case spaceUsage = "SpaceUsage"
   }
 }

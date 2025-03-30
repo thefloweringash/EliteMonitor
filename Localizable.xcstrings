@@ -4,7 +4,16 @@
     "Alloys" : {
 
     },
+    "Arrived at %@, Cooldown ends in " : {
+
+    },
     "Capacitors" : {
+
+    },
+    "Capacity: " : {
+
+    },
+    "Carrier" : {
 
     },
     "Chemical" : {
@@ -40,11 +49,27 @@
     "Events" : {
 
     },
+    "FSD Idle" : {
+
+    },
     "G%lld" : {
 
     },
     "Heat" : {
 
+    },
+    "In Game Departure Time: %@" : {
+
+    },
+    "Jumping %@ %@ %@ in " : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Jumping %1$@ %2$@ %3$@ in "
+          }
+        }
+      }
     },
     "material.encoded.adaptiveencryptors" : {
       "localizations" : {
@@ -1250,6 +1275,9 @@
 
     },
     "Thermic" : {
+
+    },
+    "Tritium: " : {
 
     },
     "Wake Scans" : {

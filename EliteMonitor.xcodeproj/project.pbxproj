@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		485262602D57BBAF00075845 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 4852625F2D57BBAF00075845 /* Localizable.xcstrings */; };
+		489FE5132D9908DD00423EF3 /* Pushover in Frameworks */ = {isa = PBXBuildFile; productRef = 489FE5122D9908DD00423EF3 /* Pushover */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				489FE5132D9908DD00423EF3 /* Pushover in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +73,7 @@
 			);
 			name = EliteMonitor;
 			packageProductDependencies = (
+				489FE5122D9908DD00423EF3 /* Pushover */,
 			);
 			productName = EliteMonitor;
 			productReference = 4852623B2D5719E200075845 /* EliteMonitor.app */;
@@ -101,6 +104,7 @@
 			mainGroup = 485262322D5719E200075845;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				489FE5112D9908DD00423EF3 /* XCRemoteSwiftPackageReference "pushover" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4852623C2D5719E200075845 /* Products */;
@@ -326,6 +330,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		489FE5112D9908DD00423EF3 /* XCRemoteSwiftPackageReference "pushover" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kiliankoe/pushover";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		489FE5122D9908DD00423EF3 /* Pushover */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 489FE5112D9908DD00423EF3 /* XCRemoteSwiftPackageReference "pushover" */;
+			productName = Pushover;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 485262332D5719E200075845 /* Project object */;
 }
