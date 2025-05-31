@@ -106,8 +106,8 @@ final class EliteJournal {
       carrierLocation = .init(system: details.system, body: nil)
 
     case "CarrierJump":
-      // 5 minutes ought to be enough, right?
-      let cooldown: TimeInterval = 300
+      // Empirically determined
+      let cooldown: TimeInterval = 290
       let estimatedCooldownEnd = if case let .scheduled(departure, _) = carrierJump {
         departure.advanced(by: cooldown)
       } else {
