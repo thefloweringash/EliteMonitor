@@ -34,7 +34,7 @@ final class EliteJournalWatcher {
   private var containerChangeSource: (any DispatchSourceFileSystemObject)?
   private var journalChangeSource: (any DispatchSourceRead)?
 
-  private var openJournal: (String, FileDescriptor)?
+  private var openJournal: (path: String, fd: FileDescriptor)?
 
   private func events() -> EventStream {
     AsyncThrowingStream { continuation in
@@ -113,7 +113,7 @@ final class EliteJournalWatcher {
         return
       }
 
-      if let openJournal, openJournal.0 == latestJournal {
+      if let openJournal, openJournal.path == latestJournal {
         print("Latest journal already open, no-op")
         return
       }
