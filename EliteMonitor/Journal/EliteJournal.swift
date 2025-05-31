@@ -138,6 +138,9 @@ final class EliteJournal {
     case "CarrierStats":
       carrierStats = (event.details as! CarrierStatsDetails)
 
+    case "CarrierJumpCancelled":
+      carrierJump = nil
+
     default:
       break
     }

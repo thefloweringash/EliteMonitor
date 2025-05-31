@@ -47,6 +47,9 @@ struct JournalEvent: Decodable, Sendable {
     case "CarrierLocation":
       details = try CarrierLocationDetails(from: coder)
 
+    case "CarrierJumpCancelled":
+      fallthrough
+
     case "StartJump":
       fallthrough
 
