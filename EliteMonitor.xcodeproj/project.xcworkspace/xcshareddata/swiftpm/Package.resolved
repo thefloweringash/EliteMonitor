@@ -1,0 +1,15 @@
+{
+  "originHash" : "5fea88375151188d9c032b8b29aa174ef47c0cabfb9952ec2904865fe6f0c210",
+  "pins" : [
+    {
+      "identity" : "pushover",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kiliankoe/pushover",
+      "state" : {
+        "revision" : "17caffad643a16c8f896936c196c6dcf194408a9",
+        "version" : "1.0.0"
+      }
+    }
+  ],
+  "version" : 3
+}
