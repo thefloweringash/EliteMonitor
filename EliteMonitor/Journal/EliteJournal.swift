@@ -67,6 +67,9 @@ final class EliteJournal {
     }
   }
 
+  // Empirically determined
+  let jumpCooldown: TimeInterval = 290
+
   private func handle(_ event: JournalEvent, live: Bool) {
     switch event.type {
 //    case "Materials":
@@ -103,37 +106,32 @@ final class EliteJournal {
 
     case "CarrierLocation":
       let details = event.details as! CarrierLocationDetails
-      carrierLocation = .init(system: details.system, body: nil)
+
+      let location = BodyLocation(system: details.system, body: nil)
+
+      if case let .scheduled(departure, destination) = carrierJump, location.system == destination.system {
+        jumpFinished(
+          to: location,
+          at: event.timestamp,
+          estimatedCooldownEnd: departure.advanced(by: jumpCooldown)
+        )
+      } else {
+        carrierLocation = location
+      }
 
     case "CarrierJump":
       // Empirically determined
-      let cooldown: TimeInterval = 290
       let estimatedCooldownEnd = if case let .scheduled(departure, _) = carrierJump {
-        departure.advanced(by: cooldown)
+        departure.advanced(by: jumpCooldown)
       } else {
-        event.timestamp.advanced(by: cooldown - 60)
+        event.timestamp.advanced(by: jumpCooldown - 60)
       }
       let details = event.details as! CarrierJumpDetails
-      carrierJump = .completed(
+      jumpFinished(
+        to: BodyLocation(system: details.system, body: details.body),
         at: event.timestamp,
         estimatedCooldownEnd: estimatedCooldownEnd
       )
-      carrierLocation = BodyLocation(system: details.system, body: details.body)
-      if estimatedCooldownEnd > Date.now {
-        print("Jump cooldown ends in the future, pushing in \(Date.now.distance(to: estimatedCooldownEnd)) seconds")
-        let carrierName = carrierStats.map { "\($0.name) \($0.callsign)" } ?? details.stationName
-        let message = "Carrier \(carrierName) jump to \(details.body) complete"
-
-        jumpNotifyTask?.cancel()
-        jumpNotifyTask = Task.detached {
-          do {
-            try await Task.sleep(for: .seconds(Date.now.distance(to: estimatedCooldownEnd)))
-            await self.notifyMe(message)
-          } catch {
-            assert(Task.isCancelled)
-          }
-        }
-      }
 
     case "CarrierStats":
       carrierStats = (event.details as! CarrierStatsDetails)
@@ -143,6 +141,30 @@ final class EliteJournal {
 
     default:
       break
+    }
+  }
+
+  private func jumpFinished(to destination: BodyLocation, at timestamp: Date, estimatedCooldownEnd: Date) {
+    carrierLocation = destination
+    carrierJump = .completed(
+      at: timestamp,
+      estimatedCooldownEnd: estimatedCooldownEnd
+    )
+
+    if estimatedCooldownEnd > Date.now {
+      print("Jump cooldown ends in the future, pushing in \(Date.now.distance(to: estimatedCooldownEnd)) seconds")
+      let carrierName = carrierStats.map { "\($0.name) \($0.callsign)" } ?? "Unknown Carrier"
+      let message = "Carrier \(carrierName) jump to \(destination.body ?? destination.system) complete"
+
+      jumpNotifyTask?.cancel()
+      jumpNotifyTask = Task.detached {
+        do {
+          try await Task.sleep(for: .seconds(Date.now.distance(to: estimatedCooldownEnd)))
+          await self.notifyMe(message)
+        } catch {
+          assert(Task.isCancelled)
+        }
+      }
     }
   }
 
