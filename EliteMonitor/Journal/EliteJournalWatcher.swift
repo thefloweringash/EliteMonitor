@@ -159,12 +159,12 @@ final class EliteJournalWatcher {
     guard let openJournal, openJournal.0 == fileName, let continuation else { return }
     do {
       var events: [JournalEvent] = []
+      let decoder = JSONDecoder()
+      decoder.dateDecodingStrategy = .iso8601
       try buffer.fill {
-        try openJournal.1.read(into: $0)
+        try openJournal.fd.read(into: $0)
       } onChunk: { data in
         do {
-          let decoder = JSONDecoder()
-          decoder.dateDecodingStrategy = .iso8601
           let event = try decoder.decode(JournalEvent.self, from: data)
           events.append(event)
         } catch {
