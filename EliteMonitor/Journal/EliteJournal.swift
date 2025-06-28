@@ -111,7 +111,7 @@ final class EliteJournal {
 
       if case let .scheduled(departure, destination) = carrierJump, location.system == destination.system {
         jumpFinished(
-          to: location,
+          to: destination,
           at: event.timestamp,
           estimatedCooldownEnd: departure.advanced(by: jumpCooldown)
         )
