@@ -14,16 +14,21 @@ struct CarrierView: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 20) {
       if let stats = journal.carrierStats {
-        (Text(stats.name) + Text(verbatim: " ") + Text(stats.callsign).foregroundStyle(.secondary)).font(.title)
+        HStack(alignment: .top) {
+          (Text(stats.name) + Text(verbatim: " ") + Text(stats.callsign).foregroundStyle(.secondary)).font(.title)
+          Spacer()
+          CarrierFuelView(fuel: stats.fuelLevel)
+            .contentTransition(.numericText(value: Double(stats.fuelLevel)))
+            .animation(.default, value: stats.fuelLevel)
+        }
 
         let used = stats.spaceUsage.totalCapacity - stats.spaceUsage.freeSpace
         Text("Capacity: ") + Text(used.formatted(.number)) +
           (Text(verbatim: " / ") + Text(stats.spaceUsage.totalCapacity.formatted(.number)))
           .foregroundStyle(.secondary)
 
-        Text("Tritium: ") + Text(stats.fuelLevel.formatted(.number)) +
-          (Text(verbatim: " / ") + Text(1000.formatted(.number)))
-          .foregroundStyle(.secondary)
+        CarrierSpaceView(spaceUsage: stats.spaceUsage)
+          .frame(height: 64)
       }
 
       TimelineView(.periodic(from: .init(timeIntervalSince1970: 0), by: 1)) { timeline in

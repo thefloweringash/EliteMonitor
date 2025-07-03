@@ -276,10 +276,20 @@ struct CarrierStatsDetails: Decodable {
 
   struct SpaceUsage: Decodable {
     let totalCapacity: Int
+    let crew: Int
+    let cargo: Int
+    let cargoSpaceReserved: Int
+    let shipPacks: Int
+    let modulePacks: Int
     let freeSpace: Int
 
     enum CodingKeys: String, CodingKey {
       case totalCapacity = "TotalCapacity"
+      case crew = "Crew"
+      case cargo = "Cargo"
+      case cargoSpaceReserved = "CargoSpaceReserved"
+      case shipPacks = "ShipPacks"
+      case modulePacks = "ModulePacks"
       case freeSpace = "FreeSpace"
     }
   }
