@@ -13,7 +13,7 @@ struct EventsView: View {
   var body: some View {
     VStack {
       List {
-        ForEach(journal.events, id: \.0) { _, event in
+        ForEach(journal.events.reversed(), id: \.0) { _, event in
 
           VStack(alignment: .leading) {
             HStack {
@@ -23,7 +23,6 @@ struct EventsView: View {
           }
         }
       }
-      .defaultScrollAnchor(.bottom)
     }
   }
 }
