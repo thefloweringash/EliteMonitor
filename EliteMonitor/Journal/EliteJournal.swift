@@ -71,7 +71,7 @@ final class EliteJournal {
   let jumpCooldown: TimeInterval = 290
 
   private func handle(_ event: JournalEvent, live: Bool) {
-    switch event.type {
+    switch event.event {
 //    case "Materials":
 //      let details = event.details as! MaterialsDetails
 //      rawMaterials = details.raw
@@ -92,21 +92,17 @@ final class EliteJournal {
 //        manufacturedMaterials[name] = (manufacturedMaterials[name] ?? 0) + 1
 //      }
 
-    case "Commander":
-      let details = event.details as! CommanderDetails
+    case let .commander(details):
       commander = details.name
 
-    case "CarrierJumpRequest":
-      let details = event.details as! CarrierJumpRequestDetails
+    case let .carrierJumpRequest(details):
       let destination = BodyLocation(system: details.system, body: details.body)
       carrierJump = .scheduled(
         at: details.departureTime,
         destination: destination
       )
 
-    case "CarrierLocation":
-      let details = event.details as! CarrierLocationDetails
-
+    case let .carrierLocation(details):
       let location = BodyLocation(system: details.system, body: nil)
 
       if case let .scheduled(departure, destination) = carrierJump, location.system == destination.system {
@@ -119,24 +115,23 @@ final class EliteJournal {
         carrierLocation = location
       }
 
-    case "CarrierJump":
+    case let .carrierJump(details):
       // Empirically determined
       let estimatedCooldownEnd = if case let .scheduled(departure, _) = carrierJump {
         departure.advanced(by: jumpCooldown)
       } else {
         event.timestamp.advanced(by: jumpCooldown - 60)
       }
-      let details = event.details as! CarrierJumpDetails
       jumpFinished(
         to: BodyLocation(system: details.system, body: details.body),
         at: event.timestamp,
         estimatedCooldownEnd: estimatedCooldownEnd
       )
 
-    case "CarrierStats":
-      carrierStats = (event.details as! CarrierStatsDetails)
+    case let .carrierStats(details):
+      carrierStats = details
 
-    case "CarrierJumpCancelled":
+    case .carrierJumpCancelled:
       carrierJump = nil
 
     default:

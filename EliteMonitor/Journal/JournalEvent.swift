@@ -8,47 +8,47 @@
 import Foundation
 
 struct JournalEvent: Decodable, Sendable {
-  let metadata: EventMetadata
-  let details: (any Sendable)?
-
-  var type: String { metadata.event }
-  var timestamp: Date { metadata.timestamp }
+  let timestamp: Date
+  let event: Event
 
   public init(from coder: Decoder) throws {
-    metadata = try EventMetadata(from: coder)
+    let container = try coder.container(keyedBy: CodingKeys.self)
+    timestamp = try container.decode(Date.self, forKey: .timestamp)
 
-    switch metadata.event {
+    let type = try container.decode(String.self, forKey: .type)
+
+    switch type {
       // Disabled while we think about how to represent materials, because there are materials that we don't know about.
 
-//    case "Materials":
-//      details = try MaterialsDetails(from: coder)
-//
-//    case "MaterialCollected":
-//      details = try MaterialCollectedDetails(from: coder)
+      //    case "Materials":
+      //      details = try MaterialsDetails(from: coder)
+      //
+      //    case "MaterialCollected":
+      //      details = try MaterialCollectedDetails(from: coder)
 
     case "Docked":
-      details = try DockedDetails(from: coder)
+      event = try .docked(DockedDetails(from: coder))
 
     case "Undocked":
-      details = try UndockedDetails(from: coder)
+      event = try .undocked(UndockedDetails(from: coder))
 
     case "Commander":
-      details = try CommanderDetails(from: coder)
+      event = try .commander(CommanderDetails(from: coder))
 
     case "CarrierJumpRequest":
-      details = try CarrierJumpRequestDetails(from: coder)
+      event = try .carrierJumpRequest(CarrierJumpRequestDetails(from: coder))
 
     case "CarrierJump":
-      details = try CarrierJumpDetails(from: coder)
+      event = try .carrierJump(CarrierJumpDetails(from: coder))
 
     case "CarrierStats":
-      details = try CarrierStatsDetails(from: coder)
+      event = try .carrierStats(CarrierStatsDetails(from: coder))
 
     case "CarrierLocation":
-      details = try CarrierLocationDetails(from: coder)
+      event = try .carrierLocation(CarrierLocationDetails(from: coder))
 
     case "CarrierJumpCancelled":
-      fallthrough
+      event = .carrierJumpCancelled
 
     case "StartJump":
       fallthrough
@@ -75,14 +75,27 @@ struct JournalEvent: Decodable, Sendable {
       fallthrough
 
     default:
-      details = nil
+      event = .unhandled(type)
     }
   }
-}
 
-struct EventMetadata: Decodable {
-  let timestamp: Date
-  let event: String
+  enum CodingKeys: String, CodingKey {
+    case timestamp
+    case type = "event"
+  }
+
+  enum Event {
+    case materialsDetails(MaterialsDetails)
+    case docked(DockedDetails)
+    case undocked(UndockedDetails)
+    case commander(CommanderDetails)
+    case carrierJumpRequest(CarrierJumpRequestDetails)
+    case carrierJump(CarrierJumpDetails)
+    case carrierStats(CarrierStatsDetails)
+    case carrierLocation(CarrierLocationDetails)
+    case carrierJumpCancelled
+    case unhandled(String)
+  }
 }
 
 struct MaterialsDetails: Decodable {

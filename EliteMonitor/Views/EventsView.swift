@@ -13,14 +13,13 @@ struct EventsView: View {
   var body: some View {
     VStack {
       List {
-        ForEach(journal.events, id: \.0) { event in
+        ForEach(journal.events, id: \.0) { _, event in
+
           VStack(alignment: .leading) {
             HStack {
-              Text(event.1.type)
-              Spacer()
-              Text(event.1.timestamp.formatted())
+              Text(event.timestamp.formatted())
             }
-            Text(event.1.details.debugDescription)
+            Text(String(describing: event.event))
           }
         }
       }
