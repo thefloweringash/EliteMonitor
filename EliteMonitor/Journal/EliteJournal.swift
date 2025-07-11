@@ -42,6 +42,17 @@ final class EliteJournal {
   var carrierLocation: BodyLocation?
   var carrierJump: CarrierJumpState?
 
+  struct Kill: Identifiable {
+    let id: Int
+    let timestamp: Date
+    let delta: TimeInterval?
+    let name: String
+    let ship: String
+    let faction: String
+  }
+
+  var kills: [Kill] = []
+
   public static let shared = EliteJournal()
 
   public func start() {
@@ -72,25 +83,24 @@ final class EliteJournal {
 
   private func handle(_ event: JournalEvent, live: Bool) {
     switch event.event {
-//    case "Materials":
-//      let details = event.details as! MaterialsDetails
-//      rawMaterials = details.raw
-//      encodedMaterials = details.encoded
-//      manufacturedMaterials = details.manufactured
-//
-//    case "MaterialCollected":
-//      let details = event.details as! MaterialCollectedDetails
-//      switch details.category {
-//      case .raw:
-//        let name = RawMaterial(rawValue: details.name)!
-//        rawMaterials[name] = (rawMaterials[name] ?? 0) + 1
-//      case .encoded:
-//        let name = EncodedMaterial(rawValue: details.name)!
-//        encodedMaterials[name] = (encodedMaterials[name] ?? 0) + 1
-//      case .manufactured:
-//        let name = ManufacturedMaterial(rawValue: details.name)!
-//        manufacturedMaterials[name] = (manufacturedMaterials[name] ?? 0) + 1
-//      }
+    case let .materials(details):
+      rawMaterials = details.raw
+      encodedMaterials = details.encoded
+      manufacturedMaterials = details.manufactured
+
+    case let .materialCollected(details):
+      adjustMaterialsBalance(material: details.name, quantity: 1)
+
+    case let .missionCompleted(details):
+      if let materialsReward = details.materialsReward {
+        for materials in materialsReward {
+          adjustMaterialsBalance(material: materials.name, quantity: materials.count)
+        }
+      }
+
+    case let .materialTrade(details):
+      adjustMaterialsBalance(material: details.paid.material, quantity: -details.paid.quantity)
+      adjustMaterialsBalance(material: details.received.material, quantity: details.received.quantity)
 
     case let .commander(details):
       commander = details.name
@@ -134,6 +144,22 @@ final class EliteJournal {
     case .carrierJumpCancelled:
       carrierJump = nil
 
+    case let .bounty(details):
+      var delta: TimeInterval?
+      if let lastKill = kills.last {
+        delta = lastKill.timestamp.distance(to: event.timestamp)
+      }
+      kills.append(
+        .init(
+          id: kills.count,
+          timestamp: event.timestamp,
+          delta: delta,
+          name: details.pilotName,
+          ship: details.target,
+          faction: details.victimFaction
+        )
+      )
+
     default:
       break
     }
@@ -161,6 +187,52 @@ final class EliteJournal {
         }
       }
     }
+  }
+
+  func materialBalance(material: AnyMaterial) -> Int {
+    switch material {
+    case let .encoded(name):
+      materialBalance(material: name)
+    case let .manufactured(name):
+      materialBalance(material: name)
+    case let .raw(name):
+      materialBalance(material: name)
+    }
+  }
+
+  func materialBalance(material: RawMaterial) -> Int {
+    rawMaterials[material, default: 0]
+  }
+
+  func materialBalance(material: EncodedMaterial) -> Int {
+    encodedMaterials[material, default: 0]
+  }
+
+  func materialBalance(material: ManufacturedMaterial) -> Int {
+    manufacturedMaterials[material, default: 0]
+  }
+
+  private func adjustMaterialsBalance(material: AnyMaterial, quantity: Int) {
+    switch material {
+    case let .encoded(name):
+      adjustMaterialsBalance(material: name, quantity: quantity)
+    case let .manufactured(name):
+      adjustMaterialsBalance(material: name, quantity: quantity)
+    case let .raw(name):
+      adjustMaterialsBalance(material: name, quantity: quantity)
+    }
+  }
+
+  private func adjustMaterialsBalance(material: EncodedMaterial, quantity: Int) {
+    encodedMaterials[material, default: 0] += quantity
+  }
+
+  private func adjustMaterialsBalance(material: RawMaterial, quantity: Int) {
+    rawMaterials[material, default: 0] += quantity
+  }
+
+  private func adjustMaterialsBalance(material: ManufacturedMaterial, quantity: Int) {
+    manufacturedMaterials[material, default: 0] += quantity
   }
 
   let pushover = Pushover(token: "")
