@@ -101,6 +101,12 @@
         }
       }
     },
+    "material.encoded.ancienthistoricaldata" : {
+
+    },
+    "material.encoded.ancientlanguagedata" : {
+
+    },
     "material.encoded.ancienttechnologicaldata" : {
       "localizations" : {
         "en" : {
@@ -931,6 +937,21 @@
         }
       }
     },
+    "material.manufactured.tg_causticcrystal" : {
+
+    },
+    "material.manufactured.tg_causticgeneratorparts" : {
+
+    },
+    "material.manufactured.tg_causticshard" : {
+
+    },
+    "material.manufactured.tg_propulsionelement" : {
+
+    },
+    "material.manufactured.tg_wreckagecomponents" : {
+
+    },
     "material.manufactured.thermicalloys" : {
       "localizations" : {
         "en" : {
@@ -950,6 +971,15 @@
           }
         }
       }
+    },
+    "material.manufactured.unknowncarapace" : {
+
+    },
+    "material.manufactured.unknownenergysource" : {
+
+    },
+    "material.manufactured.unknownorganiccircuitry" : {
+
     },
     "material.manufactured.wornshieldemitters" : {
       "localizations" : {

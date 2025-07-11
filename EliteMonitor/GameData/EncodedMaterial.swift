@@ -11,6 +11,8 @@ enum EncodedMaterial: String, RawRepresentable, Decodable, Material {
   case adaptiveencryptors
   case ancientbiologicaldata
   case ancientculturaldata
+  case ancienthistoricaldata
+  case ancientlanguagedata
   case ancienttechnologicaldata
   case archivedemissiondata
   case bulkscandata
@@ -48,6 +50,8 @@ enum EncodedMaterial: String, RawRepresentable, Decodable, Material {
     case .adaptiveencryptors: "material.encoded.adaptiveencryptors"
     case .ancientbiologicaldata: "material.encoded.ancientbiologicaldata"
     case .ancientculturaldata: "material.encoded.ancientculturaldata"
+    case .ancienthistoricaldata: "material.encoded.ancienthistoricaldata"
+    case .ancientlanguagedata: "material.encoded.ancientlanguagedata"
     case .ancienttechnologicaldata: "material.encoded.ancienttechnologicaldata"
     case .archivedemissiondata: "material.encoded.archivedemissiondata"
     case .bulkscandata: "material.encoded.bulkscandata"
@@ -94,7 +98,7 @@ enum EncodedMaterial: String, RawRepresentable, Decodable, Material {
       4
     case .compactemissionsdata, .dataminedwake, .shieldfrequencydata, .adaptiveencryptors, .classifiedscandata, .embeddedfirmware:
       5
-    case .ancientbiologicaldata, .ancientculturaldata, .ancienttechnologicaldata, .guardian_moduleblueprint:
+    case .ancientbiologicaldata, .ancientculturaldata, .ancienthistoricaldata, .ancientlanguagedata, .ancienttechnologicaldata, .guardian_moduleblueprint:
       nil
     }
   }

@@ -60,8 +60,16 @@ enum ManufacturedMaterial: String, RawRepresentable, Decodable, Material {
   case shieldemitters
   case shieldingsensors
   case temperedalloys
+  case tg_causticcrystal
+  case tg_causticgeneratorparts
+  case tg_causticshard
+  case tg_propulsionelement
+  case tg_wreckagecomponents
   case thermicalloys
   case uncutfocuscrystals
+  case unknowncarapace
+  case unknownenergysource
+  case unknownorganiccircuitry
   case wornshieldemitters
 
   var grade: Int? {
@@ -76,7 +84,7 @@ enum ManufacturedMaterial: String, RawRepresentable, Decodable, Material {
       4
     case .pharmaceuticalisolators, .militarygradealloys, .protoheatradiators, .biotechconductors, .improvisedcomponents, .militarysupercapacitors, .imperialshielding, .fedcorecomposites, .exquisitefocuscrystals, .protoradiolicalloys:
       5
-    case .guardian_powercell, .guardian_powerconduit, .guardian_sentinel_weaponparts, .guardian_sentinel_wreckagecomponents, .guardian_techcomponent:
+    case .guardian_powercell, .guardian_powerconduit, .guardian_sentinel_weaponparts, .guardian_sentinel_wreckagecomponents, .guardian_techcomponent, .tg_causticcrystal, .tg_causticgeneratorparts, .tg_causticshard, .tg_propulsionelement, .tg_wreckagecomponents, .unknowncarapace, .unknownenergysource, .unknownorganiccircuitry:
       nil
     }
   }
@@ -135,8 +143,16 @@ enum ManufacturedMaterial: String, RawRepresentable, Decodable, Material {
     case .shieldemitters: "material.manufactured.shieldemitters"
     case .shieldingsensors: "material.manufactured.shieldingsensors"
     case .temperedalloys: "material.manufactured.temperedalloys"
+    case .tg_causticcrystal: "material.manufactured.tg_causticcrystal"
+    case .tg_causticgeneratorparts: "material.manufactured.tg_causticgeneratorparts"
+    case .tg_causticshard: "material.manufactured.tg_causticshard"
+    case .tg_propulsionelement: "material.manufactured.tg_propulsionelement"
+    case .tg_wreckagecomponents: "material.manufactured.tg_wreckagecomponents"
     case .thermicalloys: "material.manufactured.thermicalloys"
     case .uncutfocuscrystals: "material.manufactured.uncutfocuscrystals"
+    case .unknowncarapace: "material.manufactured.unknowncarapace"
+    case .unknownenergysource: "material.manufactured.unknownenergysource"
+    case .unknownorganiccircuitry: "material.manufactured.unknownorganiccircuitry"
     case .wornshieldemitters: "material.manufactured.wornshieldemitters"
     }
   }
