@@ -43,6 +43,9 @@
     "Encoded Firmware" : {
 
     },
+    "Encoded Materials" : {
+
+    },
     "Encryption Files" : {
 
     },
@@ -52,7 +55,19 @@
     "FSD Idle" : {
 
     },
-    "G%lld" : {
+    "G1" : {
+
+    },
+    "G2" : {
+
+    },
+    "G3" : {
+
+    },
+    "G4" : {
+
+    },
+    "G5" : {
 
     },
     "Heat" : {
@@ -92,6 +107,9 @@
       }
     },
     "Kills" : {
+
+    },
+    "Manufactured Materials" : {
 
     },
     "material.encoded.adaptiveencryptors" : {
@@ -1300,6 +1318,9 @@
     "Mechanical Components" : {
 
     },
+    "Name" : {
+
+    },
     "Raw Material Category 1" : {
 
     },
@@ -1319,6 +1340,9 @@
 
     },
     "Raw Material Category 7" : {
+
+    },
+    "Raw Materials" : {
 
     },
     "Shield Data" : {
