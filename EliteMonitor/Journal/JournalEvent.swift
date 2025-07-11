@@ -20,11 +20,14 @@ struct JournalEvent: Decodable, Sendable {
     switch type {
       // Disabled while we think about how to represent materials, because there are materials that we don't know about.
 
-      //    case "Materials":
-      //      details = try MaterialsDetails(from: coder)
-      //
-      //    case "MaterialCollected":
-      //      details = try MaterialCollectedDetails(from: coder)
+    case "Materials":
+      event = try .materials(MaterialsDetails(from: coder))
+
+    case "MaterialCollected":
+      event = try .materialCollected(MaterialCollectedDetails(from: coder))
+
+    case "MissionCompleted":
+      event = try .missionCompleted(MissionCompletedDetails(from: coder))
 
     case "Docked":
       event = try .docked(DockedDetails(from: coder))
@@ -49,6 +52,15 @@ struct JournalEvent: Decodable, Sendable {
 
     case "CarrierJumpCancelled":
       event = .carrierJumpCancelled
+
+    case "ShipTargeted":
+      event = try .shipTargeted(ShipTargetedDetails(from: coder))
+
+    case "Bounty":
+      event = try .bounty(BountyDetails(from: coder))
+
+    case "MaterialTrade":
+      event = try .materialTrade(MaterialTradeDetails(from: coder))
 
     case "StartJump":
       fallthrough
@@ -85,7 +97,9 @@ struct JournalEvent: Decodable, Sendable {
   }
 
   enum Event {
-    case materialsDetails(MaterialsDetails)
+    case materials(MaterialsDetails)
+    case materialCollected(MaterialCollectedDetails)
+    case missionCompleted(MissionCompletedDetails)
     case docked(DockedDetails)
     case undocked(UndockedDetails)
     case commander(CommanderDetails)
@@ -94,6 +108,9 @@ struct JournalEvent: Decodable, Sendable {
     case carrierStats(CarrierStatsDetails)
     case carrierLocation(CarrierLocationDetails)
     case carrierJumpCancelled
+    case shipTargeted(ShipTargetedDetails)
+    case bounty(BountyDetails)
+    case materialTrade(MaterialTradeDetails)
     case unhandled(String)
   }
 }
@@ -131,7 +148,7 @@ struct MaterialCollectedDetails: Decodable {
   }
 
   let category: MaterialCategory
-  let name: String
+  let name: AnyMaterial
   let count: Int
 
   private enum CodingKeys: String, CodingKey {
@@ -314,5 +331,81 @@ struct CarrierStatsDetails: Decodable {
     case callsign = "Callsign"
     case fuelLevel = "FuelLevel"
     case spaceUsage = "SpaceUsage"
+  }
+}
+
+struct ShipTargetedDetails: Decodable {
+  let targetLocked: Bool
+  let ship: String?
+  let bounty: Int?
+  let pilotRank: String?
+  let faction: String?
+  let legalStatus: String?
+
+  enum CodingKeys: String, CodingKey {
+    case targetLocked = "TargetLocked"
+    case ship = "Ship"
+    case bounty = "Bounty"
+    case pilotRank = "PilotRank"
+    case faction = "Faction"
+    case legalStatus = "LegalStatus"
+  }
+}
+
+// { "timestamp":"2025-07-03T11:58:41Z", "event":"Bounty", "Rewards":[ { "Faction":"Earls of Anana", "Reward":19600 } ], "PilotName":"$npc_name_decorate:#name=Che;", "PilotName_Localised":"Che", "Target":"sidewinder", "TotalReward":19600, "VictimFaction":"Anana Brotherhood" }
+struct BountyDetails: Decodable {
+  let pilotName: String
+  let target: String
+  let totalReward: Int
+  let victimFaction: String
+
+  enum CodingKeys: String, CodingKey {
+    case pilotName = "PilotName"
+    case target = "Target"
+    case totalReward = "TotalReward"
+    case victimFaction = "VictimFaction"
+  }
+}
+
+// { "timestamp":"2025-07-09T12:18:07Z", "event":"MissionCompleted", "Faction":"HIP 90112 Jet Central Corp.", "Name":"Mission_MassacreWing_name", "LocalisedName":"Kill Anana Brotherhood faction Pirates", "MissionID":1021894599, "TargetType":"$MissionUtil_FactionTag_Pirate;", "TargetType_Localised":"Pirates", "TargetFaction":"Anana Brotherhood", "KillCount":45, "DestinationSystem":"Anana", "DestinationStation":"Yamazaki Base", "Reward":16977836, "MaterialsReward":[ { "Name":"Polonium", "Category":"$MICRORESOURCE_CATEGORY_Elements;", "Category_Localised":"Elements", "Count":12 } ], "FactionEffects":[ { "Faction":"Anana Brotherhood", "Effects":[ { "Effect":"$MISSIONUTIL_Interaction_Summary_EP_up;", "Effect_Localised":"The economic status of $#MinorFaction; has improved in the $#System; system.", "Trend":"UpGood" } ], "Influence":[ { "SystemAddress":58144730139600, "Trend":"DownBad", "Influence":"+" } ], "ReputationTrend":"DownBad", "Reputation":"+" }, { "Faction":"HIP 90112 Jet Central Corp.", "Effects":[ { "Effect":"$MISSIONUTIL_Interaction_Summary_EP_up;", "Effect_Localised":"The economic status of $#MinorFaction; has improved in the $#System; system.", "Trend":"UpGood" } ], "Influence":[ { "SystemAddress":83852497650, "Trend":"UpGood", "Influence":"++" } ], "ReputationTrend":"UpGood", "Reputation":"++" } ] }
+struct MissionCompletedDetails: Decodable {
+  let materialsReward: [MaterialReward]?
+  let missionID: Int
+
+  enum CodingKeys: String, CodingKey {
+    case materialsReward = "MaterialsReward"
+    case missionID = "MissionID"
+  }
+
+  struct MaterialReward: Decodable {
+    let name: AnyMaterial
+    let count: Int
+
+    enum CodingKeys: String, CodingKey {
+      case name = "Name"
+      case count = "Count"
+    }
+  }
+}
+
+// { "timestamp":"2025-07-10T13:10:36Z", "event":"MaterialTrade", "MarketID":3230812928, "TraderType":"encoded", "Paid":{ "Material":"securityfirmware", "Material_Localised":"Security Firmware Patch", "Category":"Encoded", "Quantity":1 }, "Received":{ "Material":"industrialfirmware", "Material_Localised":"Cracked Industrial Firmware", "Category":"Encoded", "Quantity":3 } }
+
+struct MaterialTradeDetails: Decodable {
+  let paid: MaterialQuantity
+  let received: MaterialQuantity
+
+  enum CodingKeys: String, CodingKey {
+    case paid = "Paid"
+    case received = "Received"
+  }
+
+  struct MaterialQuantity: Decodable {
+    let material: AnyMaterial
+    let quantity: Int
+
+    enum CodingKeys: String, CodingKey {
+      case material = "Material"
+      case quantity = "Quantity"
+    }
   }
 }
