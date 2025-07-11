@@ -1,0 +1,21 @@
+//
+//  Pushover.swift
+//  EliteMonitor
+//
+//  Created by Andrew Childs on 2025/07/11.
+//
+
+import Foundation
+import Pushover
+
+private let pushover = Pushover(token: "")
+
+enum Notifications {
+  nonisolated static func sendPushoverNotification(_ message: String) async {
+    let notification = Notification(
+      message: message,
+      to: ""
+    )
+    _ = try? await pushover.send(notification)
+  }
+}

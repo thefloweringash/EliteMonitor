@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Pushover
 
 @Observable
 @MainActor
@@ -181,7 +180,7 @@ final class EliteJournal {
       jumpNotifyTask = Task.detached {
         do {
           try await Task.sleep(for: .seconds(Date.now.distance(to: estimatedCooldownEnd)))
-          await self.notifyMe(message)
+          await Notifications.sendPushoverNotification(message)
         } catch {
           assert(Task.isCancelled)
         }
@@ -233,11 +232,5 @@ final class EliteJournal {
 
   private func adjustMaterialsBalance(material: ManufacturedMaterial, quantity: Int) {
     manufacturedMaterials[material, default: 0] += quantity
-  }
-
-  let pushover = Pushover(token: "")
-  private nonisolated func notifyMe(_ message: String) async {
-    let notification = Notification(message: message, to: "")
-    _ = try? await pushover.send(notification)
   }
 }
