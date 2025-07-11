@@ -10,8 +10,15 @@
     "Capacitors" : {
 
     },
-    "Capacity: " : {
-
+    "Capacity: %@ / %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Capacity: %1$@ / %2$@"
+          }
+        }
+      }
     },
     "Carrier" : {
 

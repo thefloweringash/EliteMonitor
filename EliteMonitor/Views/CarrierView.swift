@@ -22,10 +22,11 @@ struct CarrierView: View {
             .animation(.default, value: stats.fuelLevel)
         }
 
-        let used = stats.spaceUsage.totalCapacity - stats.spaceUsage.freeSpace
-        Text("Capacity: ") + Text(used.formatted(.number)) +
-          (Text(verbatim: " / ") + Text(stats.spaceUsage.totalCapacity.formatted(.number)))
-          .foregroundStyle(.secondary)
+        let used = Measurement<UnitMass>(value: Double(stats.spaceUsage.totalCapacity - stats.spaceUsage.freeSpace), unit: .metricTons)
+          .formatted(.measurement(width: .narrow))
+        let total = Measurement<UnitMass>(value: Double(stats.spaceUsage.totalCapacity), unit: .metricTons)
+          .formatted(.measurement(width: .narrow))
+        Text("Capacity: \(used) / \(Text(total).foregroundStyle(.secondary))")
 
         CarrierSpaceView(spaceUsage: stats.spaceUsage)
           .frame(height: 64)
