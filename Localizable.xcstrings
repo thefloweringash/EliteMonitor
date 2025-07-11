@@ -71,6 +71,29 @@
         }
       }
     },
+    "Kill(timestamp=%@,delta=%@,name=%@,ship=%@,faction=%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ (+%2$@) %3$@ %4$@ [%5$@]"
+          }
+        }
+      }
+    },
+    "Kill(timestamp=%@,name=%@,ship=%@,faction=%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@ %3$@ [%4$@]"
+          }
+        }
+      }
+    },
+    "Kills" : {
+
+    },
     "material.encoded.adaptiveencryptors" : {
       "localizations" : {
         "en" : {

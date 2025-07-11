@@ -14,6 +14,7 @@ struct ContentView: View {
     case carrier
     case materials
     case events
+    case kills
   }
 
   @State var selectedTab: SelectedTab = .carrier
@@ -24,6 +25,7 @@ struct ContentView: View {
         Text("Carrier").tag(SelectedTab.carrier)
         Text("Materials").tag(SelectedTab.materials)
         Text("Events").tag(SelectedTab.events)
+        Text("Kills").tag(SelectedTab.kills)
       }
     } detail: {
       switch selectedTab {
@@ -33,6 +35,8 @@ struct ContentView: View {
         MaterialsView()
       case .events:
         EventsView()
+      case .kills:
+        KillsView()
       }
     }
     .navigationTitle(journal.commander.map { "CMDR \($0)" } ?? "CMDR Jameson")
