@@ -8,7 +8,9 @@
 import Foundation
 
 protocol Material: Decodable {
+  var localizedName: LocalizedStringResource { get }
   var grade: Int? { get }
+  var asAnyMaterial: AnyMaterial { get }
 //  var category: Int { get }
 }
 
@@ -19,7 +21,7 @@ extension Material {
   }
 }
 
-enum AnyMaterial: Decodable, Material {
+enum AnyMaterial: Hashable, Decodable, Material {
   enum DecodeErrors: Error {
     case unknownMaterial(String)
   }
@@ -44,18 +46,27 @@ enum AnyMaterial: Decodable, Material {
     }
   }
 
+  init?(rawValue: String) {
+    if let encoded = EncodedMaterial(rawValue: rawValue) {
+      self = .encoded(encoded)
+    } else if let manufactured = ManufacturedMaterial(rawValue: rawValue) {
+      self = .manufactured(manufactured)
+    } else if let raw = RawMaterial(rawValue: rawValue) {
+      self = .raw(raw)
+    } else {
+      return nil
+    }
+  }
+
   init(from decoder: Decoder) throws {
     let svc = try decoder.singleValueContainer()
     let stringName = try svc.decode(String.self).lowercased()
 
-    if let encoded = EncodedMaterial(rawValue: stringName) {
-      self = .encoded(encoded)
-    } else if let manufactured = ManufacturedMaterial(rawValue: stringName) {
-      self = .manufactured(manufactured)
-    } else if let raw = RawMaterial(rawValue: stringName) {
-      self = .raw(raw)
-    } else {
+    guard let value = Self(rawValue: stringName) else {
       throw DecodeErrors.unknownMaterial(stringName)
     }
+    self = value
   }
+
+  var asAnyMaterial: AnyMaterial { self }
 }

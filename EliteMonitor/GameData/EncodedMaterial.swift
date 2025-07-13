@@ -7,7 +7,9 @@
 
 import Foundation
 
-enum EncodedMaterial: String, RawRepresentable, Decodable, Material {
+enum EncodedMaterial: String, RawRepresentable, Decodable, Material, CaseIterable {
+  var asAnyMaterial: AnyMaterial { .encoded(self) }
+
   case adaptiveencryptors
   case ancientbiologicaldata
   case ancientculturaldata

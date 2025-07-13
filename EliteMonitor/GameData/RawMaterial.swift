@@ -7,7 +7,11 @@
 
 import Foundation
 
-enum RawMaterial: String, RawRepresentable, Decodable, Material {
+enum RawMaterial: String, RawRepresentable, Decodable, Material, CaseIterable, Identifiable {
+  var asAnyMaterial: AnyMaterial { .raw(self) }
+
+  var id: Self { self }
+
   case antimony
   case arsenic
   case boron

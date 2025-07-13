@@ -7,23 +7,37 @@
 
 import SwiftUI
 
+struct MissionReward: Hashable, Identifiable {
+  var id: UUID
+  var material: AnyMaterial
+  var count: Int
+
+  init(_ material: AnyMaterial, _ count: Int) {
+    id = UUID()
+    self.material = material
+    self.count = count
+  }
+}
+
 struct MaterialTableRow: Identifiable {
-  var id: String { name.key }
-  let name: LocalizedStringResource
+  let group: MaterialGroup
   let g1: AnyMaterial
   let g2: AnyMaterial
   let g3: AnyMaterial
   let g4: AnyMaterial
   let g5: AnyMaterial?
 
+  var id: MaterialGroup { group }
+  var name: LocalizedStringResource { group.localizedName }
+
   init(
-    _ name: LocalizedStringResource,
+    _ group: MaterialGroup,
     _ g1: RawMaterial,
     _ g2: RawMaterial,
     _ g3: RawMaterial,
     _ g4: RawMaterial,
   ) {
-    self.name = name
+    self.group = group
     self.g1 = .raw(g1)
     self.g2 = .raw(g2)
     self.g3 = .raw(g3)
@@ -32,14 +46,14 @@ struct MaterialTableRow: Identifiable {
   }
 
   init(
-    _ name: LocalizedStringResource,
+    _ group: MaterialGroup,
     _ g1: EncodedMaterial,
     _ g2: EncodedMaterial,
     _ g3: EncodedMaterial,
     _ g4: EncodedMaterial,
     _ g5: EncodedMaterial
   ) {
-    self.name = name
+    self.group = group
     self.g1 = .encoded(g1)
     self.g2 = .encoded(g2)
     self.g3 = .encoded(g3)
@@ -48,14 +62,14 @@ struct MaterialTableRow: Identifiable {
   }
 
   init(
-    _ name: LocalizedStringResource,
+    _ group: MaterialGroup,
     _ g1: ManufacturedMaterial,
     _ g2: ManufacturedMaterial,
     _ g3: ManufacturedMaterial,
     _ g4: ManufacturedMaterial,
     _ g5: ManufacturedMaterial
   ) {
-    self.name = name
+    self.group = group
     self.g1 = .manufactured(g1)
     self.g2 = .manufactured(g2)
     self.g3 = .manufactured(g3)
@@ -65,32 +79,55 @@ struct MaterialTableRow: Identifiable {
 }
 
 struct MaterialCell: View {
-  @Environment(EliteJournal.self) var journal
-
-  init(_ material: AnyMaterial) {
-    self.material = material
-  }
-
   let material: AnyMaterial
+  let count: Int
+  let incoming: Int?
+  let emphasis: Emphasis
 
   var body: some View {
-    let count = journal.materialBalance(material: material)
     ZStack {
       let cap = material.cap!
-      GeometryReader { geom in
-        ZStack(alignment: .leading) {
-          RoundedRectangle(cornerRadius: 3)
-            .fill(.progressBackground)
-          RoundedRectangle(cornerRadius: 3)
-            .fill(.progressForeground)
-            .frame(width: geom.size.width * CGFloat(count) / CGFloat(cap))
+      let full = count >= cap - 2
+
+      let spaceAvailable = cap - count
+      let spaceConstrained = if let incoming {
+        incoming > spaceAvailable
+      } else {
+        false
+      }
+
+      let emphasised = (emphasis.contains(.exceedingCap) && spaceConstrained) || (emphasis.contains(.withCapacity) && !full)
+      let diminished = !emphasis.isEmpty && !emphasised
+
+      if !diminished {
+        GeometryReader { geom in
+          ZStack(alignment: .leading) {
+            RoundedRectangle(cornerRadius: 3)
+              .fill(.progressBackground)
+            if let incoming {
+              RoundedRectangle(cornerRadius: 3)
+                .fill(.progressProvisional)
+                .frame(width: geom.size.width * min(1.0, CGFloat(count + incoming) / CGFloat(cap)))
+            }
+            RoundedRectangle(cornerRadius: 3)
+              .fill(.progressForeground)
+              .frame(width: geom.size.width * CGFloat(count) / CGFloat(cap))
+          }
         }
       }
+
       HStack {
         Text(material.localizedName)
           .frame(maxWidth: .infinity, alignment: .leading)
         Text(count.formatted())
           .monospacedDigit()
+
+        if let incoming {
+          Text("Incoming(quantity=\(incoming.formatted()))")
+          if incoming > spaceAvailable {
+            Text("InlineIncomingOverflow(quantity=\(incoming - spaceAvailable),icon=\(Image(systemName: "exclamationmark.circle")))")
+          }
+        }
       }
       .padding(.horizontal, 4)
       .padding(.vertical, 2)
@@ -99,51 +136,183 @@ struct MaterialCell: View {
 }
 
 struct MaterialsView: View {
+  @State var missionRewards: [MissionReward] = []
+
+  var body: some View {
+    HSplitView {
+      MaterialsTable(missionRewards: missionRewards)
+        .frame(minWidth: 400)
+//        .layoutPriority(1)
+      IncomingMaterials(missionRewards: $missionRewards)
+        .frame(minWidth: 100)
+    }
+  }
+}
+
+struct IncomingMaterials: View {
+  @Binding var missionRewards: [MissionReward]
+  @State var selectedMissionRewards: Set<UUID> = []
+
+  @State var newMaterial: AnyMaterial?
+  @State var quantity: Int?
+
+  enum InputField {
+    case material
+    case quantity
+  }
+
+  @FocusState var focusedInputField: InputField?
+
+  var body: some View {
+    VStack(spacing: 0) {
+      HStack {
+        MaterialSelectorTextField(material: $newMaterial, onSubmit: {
+          focusedInputField = .quantity
+        })
+        .frame(minWidth: 200)
+        .focused($focusedInputField, equals: .material)
+        // OnSubmit cannot work here:
+        // https://christiantietze.de/posts/2023/06/swiftui-onsubmit/
+        //  .onSubmit {
+        //    focusedInputField = .quantity
+        //  }
+
+        TextField(
+          value: $quantity,
+          format: .number,
+          prompt: Text("Qty"),
+          label: {
+            Text("Quantity")
+          }
+        )
+        .focused($focusedInputField, equals: .quantity)
+        .frame(minWidth: 30)
+        .onSubmit {
+          guard let newMaterial, let quantity else { return }
+          missionRewards.append(.init(newMaterial, quantity))
+
+          self.newMaterial = nil
+          self.quantity = nil
+
+          focusedInputField = .material
+        }
+      }
+      .padding(8)
+      List(selection: $selectedMissionRewards) {
+        ForEach(missionRewards) { reward in
+          Text("Reward(quantity=\(Text(reward.count.formatted()).monospacedDigit()),material=\(reward.material.localizedName))")
+        }
+        // This is very iOS style swipe-to-delete
+        .onDelete { indexes in
+          missionRewards.remove(atOffsets: indexes)
+        }
+      }
+      .onDeleteCommand {
+        missionRewards.removeAll { m in
+          selectedMissionRewards.contains(m.id)
+        }
+      }
+    }
+  }
+}
+
+struct Emphasis: OptionSet {
+  let rawValue: Int
+
+  static let withCapacity: Emphasis = .init(rawValue: 1 << 0)
+  static let exceedingCap: Emphasis = .init(rawValue: 1 << 1)
+}
+
+struct MaterialsTable: View {
+  let missionRewards: [MissionReward]
+
   @Environment(EliteJournal.self) var journal
+
+  @State var emphasis: Emphasis = []
+  @State var incomingMaterials: [AnyMaterial: Int] = [:]
+
+  @inlinable
+  func cell(_ m: AnyMaterial) -> MaterialCell {
+    MaterialCell(
+      material: m,
+      count: journal.materialBalance(material: m),
+      incoming: incomingMaterials[m],
+      emphasis: emphasis
+    )
+  }
 
   var body: some View {
     Table(of: MaterialTableRow.self) {
       TableColumn("Name") { Text($0.name) }
-      TableColumn("G1") { MaterialCell($0.g1) }
-      TableColumn("G2") { MaterialCell($0.g2) }
-      TableColumn("G3") { MaterialCell($0.g3) }
-      TableColumn("G4") { MaterialCell($0.g4) }
+      TableColumn("G1") { cell($0.g1) }
+      TableColumn("G2") { cell($0.g2) }
+      TableColumn("G3") { cell($0.g3) }
+      TableColumn("G4") { cell($0.g4) }
       TableColumn("G5") { row in
         if let g5 = row.g5 {
-          MaterialCell(g5)
+          cell(g5)
         }
       }
     } rows: {
       Section("Raw Materials") {
-        TableRow(MaterialTableRow("Raw Material Category 1", .carbon, .vanadium, .niobium, .yttrium))
-        TableRow(MaterialTableRow("Raw Material Category 2", .phosphorus, .chromium, .molybdenum, .technetium))
-        TableRow(MaterialTableRow("Raw Material Category 3", .sulphur, .manganese, .cadmium, .ruthenium))
-        TableRow(MaterialTableRow("Raw Material Category 4", .iron, .zinc, .tin, .selenium))
-        TableRow(MaterialTableRow("Raw Material Category 5", .nickel, .germanium, .tungsten, .tellurium))
-        TableRow(MaterialTableRow("Raw Material Category 6", .rhenium, .arsenic, .mercury, .polonium))
-        TableRow(MaterialTableRow("Raw Material Category 7", .lead, .zirconium, .boron, .antimony))
+        TableRow(MaterialTableRow(.rawMaterials1, .carbon, .vanadium, .niobium, .yttrium))
+        TableRow(MaterialTableRow(.rawMaterials2, .phosphorus, .chromium, .molybdenum, .technetium))
+        TableRow(MaterialTableRow(.rawMaterials3, .sulphur, .manganese, .cadmium, .ruthenium))
+        TableRow(MaterialTableRow(.rawMaterials4, .iron, .zinc, .tin, .selenium))
+        TableRow(MaterialTableRow(.rawMaterials5, .nickel, .germanium, .tungsten, .tellurium))
+        TableRow(MaterialTableRow(.rawMaterials6, .rhenium, .arsenic, .mercury, .polonium))
+        TableRow(MaterialTableRow(.rawMaterials7, .lead, .zirconium, .boron, .antimony))
       }
 
       Section("Encoded Materials") {
-        TableRow(MaterialTableRow("Emission Data", .scrambledemissiondata, .archivedemissiondata, .emissiondata, .decodedemissiondata, .compactemissionsdata))
-        TableRow(MaterialTableRow("Wake Scans", .disruptedwakeechoes, .fsdtelemetry, .wakesolutions, .hyperspacetrajectories, .dataminedwake))
-        TableRow(MaterialTableRow("Shield Data", .shieldcyclerecordings, .shieldsoakanalysis, .shielddensityreports, .shieldpatternanalysis, .shieldfrequencydata))
-        TableRow(MaterialTableRow("Encryption Files", .encryptedfiles, .encryptioncodes, .symmetrickeys, .encryptionarchives, .adaptiveencryptors))
-        TableRow(MaterialTableRow("Data Archives", .bulkscandata, .scanarchives, .scandatabanks, .encodedscandata, .classifiedscandata))
-        TableRow(MaterialTableRow("Encoded Firmware", .legacyfirmware, .consumerfirmware, .industrialfirmware, .securityfirmware, .embeddedfirmware))
+        TableRow(MaterialTableRow(.emissionData, .scrambledemissiondata, .archivedemissiondata, .emissiondata, .decodedemissiondata, .compactemissionsdata))
+        TableRow(MaterialTableRow(.wakeScans, .disruptedwakeechoes, .fsdtelemetry, .wakesolutions, .hyperspacetrajectories, .dataminedwake))
+        TableRow(MaterialTableRow(.shieldData, .shieldcyclerecordings, .shieldsoakanalysis, .shielddensityreports, .shieldpatternanalysis, .shieldfrequencydata))
+        TableRow(MaterialTableRow(.encryptionFiles, .encryptedfiles, .encryptioncodes, .symmetrickeys, .encryptionarchives, .adaptiveencryptors))
+        TableRow(MaterialTableRow(.dataArchives, .bulkscandata, .scanarchives, .scandatabanks, .encodedscandata, .classifiedscandata))
+        TableRow(MaterialTableRow(.encodedFirmware, .legacyfirmware, .consumerfirmware, .industrialfirmware, .securityfirmware, .embeddedfirmware))
       }
+
       Section("Manufactured Materials") {
-        TableRow(MaterialTableRow("Chemical", .chemicalstorageunits, .chemicalprocessors, .chemicaldistillery, .chemicalmanipulators, .pharmaceuticalisolators))
-        TableRow(MaterialTableRow("Thermic", .temperedalloys, .heatresistantceramics, .precipitatedalloys, .thermicalloys, .militarygradealloys))
-        TableRow(MaterialTableRow("Heat", .heatconductionwiring, .heatdispersionplate, .heatexchangers, .heatvanes, .protoheatradiators))
-        TableRow(MaterialTableRow("Conductive", .basicconductors, .conductivecomponents, .conductiveceramics, .conductivepolymers, .biotechconductors))
-        TableRow(MaterialTableRow("Mechanical Components", .mechanicalscrap, .mechanicalequipment, .mechanicalcomponents, .configurablecomponents, .improvisedcomponents))
-        TableRow(MaterialTableRow("Capacitors", .gridresistors, .hybridcapacitors, .electrochemicalarrays, .polymercapacitors, .militarysupercapacitors))
-        TableRow(MaterialTableRow("Shielding", .wornshieldemitters, .shieldemitters, .shieldingsensors, .compoundshielding, .imperialshielding))
-        TableRow(MaterialTableRow("Composite", .compactcomposites, .filamentcomposites, .highdensitycomposites, .fedproprietarycomposites, .fedcorecomposites))
-        TableRow(MaterialTableRow("Crystals", .crystalshards, .uncutfocuscrystals, .focuscrystals, .refinedfocuscrystals, .exquisitefocuscrystals))
-        TableRow(MaterialTableRow("Alloys", .salvagedalloys, .galvanisingalloys, .phasealloys, .protolightalloys, .protoradiolicalloys))
+        TableRow(MaterialTableRow(.chemical, .chemicalstorageunits, .chemicalprocessors, .chemicaldistillery, .chemicalmanipulators, .pharmaceuticalisolators))
+        TableRow(MaterialTableRow(.thermic, .temperedalloys, .heatresistantceramics, .precipitatedalloys, .thermicalloys, .militarygradealloys))
+        TableRow(MaterialTableRow(.heat, .heatconductionwiring, .heatdispersionplate, .heatexchangers, .heatvanes, .protoheatradiators))
+        TableRow(MaterialTableRow(.conductive, .basicconductors, .conductivecomponents, .conductiveceramics, .conductivepolymers, .biotechconductors))
+        TableRow(MaterialTableRow(.mechanicalComponents, .mechanicalscrap, .mechanicalequipment, .mechanicalcomponents, .configurablecomponents, .improvisedcomponents))
+        TableRow(MaterialTableRow(.capacitors, .gridresistors, .hybridcapacitors, .electrochemicalarrays, .polymercapacitors, .militarysupercapacitors))
+        TableRow(MaterialTableRow(.shielding, .wornshieldemitters, .shieldemitters, .shieldingsensors, .compoundshielding, .imperialshielding))
+        TableRow(MaterialTableRow(.composite, .compactcomposites, .filamentcomposites, .highdensitycomposites, .fedproprietarycomposites, .fedcorecomposites))
+        TableRow(MaterialTableRow(.crystals, .crystalshards, .uncutfocuscrystals, .focuscrystals, .refinedfocuscrystals, .exquisitefocuscrystals))
+        TableRow(MaterialTableRow(.alloys, .salvagedalloys, .galvanisingalloys, .phasealloys, .protolightalloys, .protoradiolicalloys))
       }
+    }
+    .toolbar {
+      ToolbarItem {
+        Button {
+          emphasis.formSymmetricDifference(.exceedingCap)
+        } label: {
+          Label {
+            Text("Items exceeding cap")
+          } icon: {
+            Image(systemName: emphasis.contains(.exceedingCap) ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+          }
+        }
+      }
+
+      ToolbarItem {
+        Button {
+          emphasis.formSymmetricDifference(.withCapacity)
+        } label: {
+          Label {
+            Text("Items with Capacity")
+          } icon: {
+            Image(systemName: emphasis.contains(.withCapacity) ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+          }
+        }
+      }
+    }
+    .onChange(of: missionRewards) {
+      incomingMaterials = Dictionary(missionRewards.lazy.map { ($0.material, $0.count) }, uniquingKeysWith: +)
     }
   }
 }

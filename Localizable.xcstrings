@@ -47,6 +47,9 @@
     "Emission Data" : {
 
     },
+    "Encoded" : {
+
+    },
     "Encoded Firmware" : {
 
     },
@@ -83,6 +86,32 @@
     "In Game Departure Time: %@" : {
 
     },
+    "Incoming(quantity=%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(+ %@)"
+          }
+        }
+      }
+    },
+    "InlineIncomingOverflow(quantity=%lld,icon=%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(%1$lld %2$@)"
+          }
+        }
+      }
+    },
+    "Items exceeding cap" : {
+
+    },
+    "Items with Capacity" : {
+
+    },
     "Jumping %@ %@ %@ in " : {
       "localizations" : {
         "en" : {
@@ -114,6 +143,9 @@
       }
     },
     "Kills" : {
+
+    },
+    "Manufactured" : {
 
     },
     "Manufactured Materials" : {
@@ -1224,7 +1256,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Selnium"
+            "value" : "Selenium"
           }
         }
       }
@@ -1328,6 +1360,15 @@
     "Name" : {
 
     },
+    "Qty" : {
+
+    },
+    "Quantity" : {
+
+    },
+    "Raw" : {
+
+    },
     "Raw Material Category 1" : {
 
     },
@@ -1351,6 +1392,16 @@
     },
     "Raw Materials" : {
 
+    },
+    "Reward(quantity=%@,material=%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
     },
     "Shield Data" : {
 
