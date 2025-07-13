@@ -7,9 +7,12 @@
 
 import Dispatch
 import Foundation
+import OSLog
 import System
 
 final class EliteJournalWatcher {
+  @ObservationIgnored let logger = Logger(subsystem: "nz.org.cons.EliteMonitor", category: "EliteJournalWatcher")
+
   typealias EventBundle = ([JournalEvent], Bool)
   typealias EventStream = AsyncThrowingStream<EventBundle, any Error>
 
@@ -100,7 +103,7 @@ final class EliteJournalWatcher {
     let fileFD: FileDescriptor
     let path: String
 
-    print("Directory changed, looking for new journal file")
+    logger.debug("Directory changed, looking for new journal file")
 
     do {
       guard let latestJournal =
@@ -109,12 +112,12 @@ final class EliteJournalWatcher {
           .sorted()
           .last
       else {
-        print("No journal found, waiting for first journal")
+        logger.debug("No journal found, waiting for first journal")
         return
       }
 
       if let openJournal, openJournal.path == latestJournal {
-        print("Latest journal already open, no-op")
+        logger.debug("Latest journal already open, no-op")
         return
       }
 

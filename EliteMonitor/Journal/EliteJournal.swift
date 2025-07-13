@@ -6,10 +6,13 @@
 //
 
 import Foundation
+import OSLog
 
 @Observable
 @MainActor
 final class EliteJournal {
+  @ObservationIgnored let logger = Logger(subsystem: "nz.org.cons.EliteMonitor", category: "EliteJournal")
+
   var events: [(Int, JournalEvent)] = []
 
   var rawMaterials: [RawMaterial: Int] = [:]
@@ -62,17 +65,17 @@ final class EliteJournal {
     do {
       var index = 0
       for try await (batch, live) in EliteJournalWatcher.events() {
-        print("got bundle of \(batch.count) events")
+        logger.debug("got bundle of \(batch.count) events")
         for event in batch {
           handle(event, live: live)
 
           events.append((index, event))
           index += 1
         }
-        print("new index = \(index)")
+        logger.debug("new index = \(index)")
       }
     } catch {
-      print("Event stream failed")
+      logger.error("Event stream failed")
       fatalError(error.localizedDescription)
     }
   }
@@ -172,7 +175,7 @@ final class EliteJournal {
     )
 
     if estimatedCooldownEnd > Date.now {
-      print("Jump cooldown ends in the future, pushing in \(Date.now.distance(to: estimatedCooldownEnd)) seconds")
+      logger.info("Jump cooldown ends in the future, pushing in \(Date.now.distance(to: estimatedCooldownEnd)) seconds")
       let carrierName = carrierStats.map { "\($0.name) \($0.callsign)" } ?? "Unknown Carrier"
       let message = "Carrier \(carrierName) jump to \(destination.body ?? destination.system) complete"
 
