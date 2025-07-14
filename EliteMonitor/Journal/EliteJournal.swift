@@ -118,6 +118,11 @@ final class EliteJournal {
       adjustMaterialsBalance(material: details.paid.material, quantity: -details.paid.quantity)
       adjustMaterialsBalance(material: details.received.material, quantity: details.received.quantity)
 
+    case let .engineerCraft(details):
+      for ingredient in details.ingredients {
+        adjustMaterialsBalance(material: ingredient.name, quantity: -ingredient.count)
+      }
+
     case let .commander(details):
       commander = details.name
 

@@ -62,6 +62,9 @@ struct JournalEvent: Decodable, Sendable {
     case "MaterialTrade":
       event = try .materialTrade(MaterialTradeDetails(from: coder))
 
+    case "EngineerCraft":
+      event = try .engineerCraft(EngineerCraftDetails(from: coder))
+
     case "StartJump":
       fallthrough
 
@@ -111,6 +114,7 @@ struct JournalEvent: Decodable, Sendable {
     case shipTargeted(ShipTargetedDetails)
     case bounty(BountyDetails)
     case materialTrade(MaterialTradeDetails)
+    case engineerCraft(EngineerCraftDetails)
     case unhandled(String)
   }
 }
@@ -406,6 +410,25 @@ struct MaterialTradeDetails: Decodable {
     enum CodingKeys: String, CodingKey {
       case material = "Material"
       case quantity = "Quantity"
+    }
+  }
+}
+
+// { "timestamp":"2025-07-13T12:23:20Z", "event":"EngineerCraft", "Slot":"PowerPlant", "Module":"int_powerplant_size6_class5", "Ingredients":[ { "Name":"tungsten", "Count":1 }, { "Name":"compoundshielding", "Name_Localised":"Compound Shielding", "Count":1 }, { "Name":"fedcorecomposites", "Name_Localised":"Core Dynamics Composites", "Count":1 } ], "Engineer":"Hera Tani", "EngineerID":300090, "BlueprintID":128673764, "BlueprintName":"PowerPlant_Armoured", "Level":5, "Quality":0.200000, "Modifiers":[ { "Label":"Mass", "Value":24.000000, "OriginalValue":20.000000, "LessIsGood":1 }, { "Label":"Integrity", "Value":252.959991, "OriginalValue":124.000000, "LessIsGood":0 }, { "Label":"PowerCapacity", "Value":27.820801, "OriginalValue":25.200001, "LessIsGood":0 }, { "Label":"HeatEfficiency", "Value":0.358400, "OriginalValue":0.400000, "LessIsGood":1 } ] }
+struct EngineerCraftDetails: Decodable {
+  let ingredients: [Ingredient]
+
+  enum CodingKeys: String, CodingKey {
+    case ingredients = "Ingredients"
+  }
+
+  struct Ingredient: Decodable {
+    let name: AnyMaterial
+    let count: Int
+
+    enum CodingKeys: String, CodingKey {
+      case name = "Name"
+      case count = "Count"
     }
   }
 }
