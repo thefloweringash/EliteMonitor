@@ -5,19 +5,8 @@
 //  Created by Andrew Childs on 2025/02/09.
 //
 
+import SwiftData
 import SwiftUI
-
-struct MissionReward: Hashable, Identifiable {
-  var id: UUID
-  var material: AnyMaterial
-  var count: Int
-
-  init(_ material: AnyMaterial, _ count: Int) {
-    id = UUID()
-    self.material = material
-    self.count = count
-  }
-}
 
 struct MaterialTableRow: Identifiable {
   let group: MaterialGroup
@@ -140,18 +129,19 @@ struct MaterialsView: View {
 
   var body: some View {
     HSplitView {
-      MaterialsTable(missionRewards: missionRewards)
+      MaterialsTable()
         .frame(minWidth: 400)
 //        .layoutPriority(1)
-      IncomingMaterials(missionRewards: $missionRewards)
+      IncomingMaterials()
         .frame(minWidth: 100)
     }
   }
 }
 
 struct IncomingMaterials: View {
-  @Binding var missionRewards: [MissionReward]
-  @State var selectedMissionRewards: Set<UUID> = []
+  @Query var missionRewards: [MissionReward]
+  @Environment(\.modelContext) private var modelContext
+  @State var selectedMissionRewards: Set<PersistentIdentifier> = []
 
   @State var newMaterial: AnyMaterial?
   @State var quantity: Int?
@@ -189,7 +179,8 @@ struct IncomingMaterials: View {
         .frame(minWidth: 30)
         .onSubmit {
           guard let newMaterial, let quantity else { return }
-          missionRewards.append(.init(newMaterial, quantity))
+
+          modelContext.insert(MissionReward(material: newMaterial, count: quantity))
 
           self.newMaterial = nil
           self.quantity = nil
@@ -204,13 +195,15 @@ struct IncomingMaterials: View {
         }
         // This is very iOS style swipe-to-delete
         .onDelete { indexes in
-          missionRewards.remove(atOffsets: indexes)
+          for i in indexes {
+            modelContext.delete(missionRewards[i])
+          }
         }
       }
       .onDeleteCommand {
-        missionRewards.removeAll { m in
-          selectedMissionRewards.contains(m.id)
-        }
+        try! modelContext.delete(model: MissionReward.self, where: #Predicate<MissionReward> { x in
+          selectedMissionRewards.contains(x.id)
+        })
       }
     }
   }
@@ -224,7 +217,7 @@ struct Emphasis: OptionSet {
 }
 
 struct MaterialsTable: View {
-  let missionRewards: [MissionReward]
+  @Query var missionRewards: [MissionReward]
 
   @Environment(EliteJournal.self) var journal
 
@@ -311,7 +304,7 @@ struct MaterialsTable: View {
         }
       }
     }
-    .onChange(of: missionRewards) {
+    .onChange(of: missionRewards, initial: true) {
       incomingMaterials = Dictionary(missionRewards.lazy.map { ($0.material, $0.count) }, uniquingKeysWith: +)
     }
   }

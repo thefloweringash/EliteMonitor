@@ -21,7 +21,7 @@ extension Material {
   }
 }
 
-enum AnyMaterial: Hashable, Decodable, Material {
+enum AnyMaterial: Hashable, Codable, Material, RawRepresentable {
   enum DecodeErrors: Error {
     case unknownMaterial(String)
   }
@@ -69,4 +69,17 @@ enum AnyMaterial: Hashable, Decodable, Material {
   }
 
   var asAnyMaterial: AnyMaterial { self }
+
+  func encode(to encoder: any Encoder) throws {
+    var container = encoder.singleValueContainer()
+    try container.encode(rawValue)
+  }
+
+  var rawValue: String {
+    switch self {
+    case let .raw(x): x.rawValue
+    case let .manufactured(x): x.rawValue
+    case let .encoded(x): x.rawValue
+    }
+  }
 }

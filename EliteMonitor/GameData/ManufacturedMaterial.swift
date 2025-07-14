@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ManufacturedMaterial: String, RawRepresentable, Decodable, Material, CaseIterable {
+enum ManufacturedMaterial: String, RawRepresentable, Codable, Material, CaseIterable {
   var asAnyMaterial: AnyMaterial { .manufactured(self) }
 
   case basicconductors

@@ -16,5 +16,6 @@ struct EliteMonitorApp: App {
       ContentView()
     }
     .environment(EliteJournal.shared)
+    .modelContext(EliteJournal.shared.context)
   }
 }

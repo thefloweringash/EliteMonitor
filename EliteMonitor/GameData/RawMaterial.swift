@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum RawMaterial: String, RawRepresentable, Decodable, Material, CaseIterable, Identifiable {
+enum RawMaterial: String, RawRepresentable, Codable, Material, CaseIterable, Identifiable {
   var asAnyMaterial: AnyMaterial { .raw(self) }
 
   var id: Self { self }

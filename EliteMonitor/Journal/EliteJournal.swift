@@ -7,11 +7,15 @@
 
 import Foundation
 import OSLog
+import SwiftData
 
 @Observable
 @MainActor
 final class EliteJournal {
   @ObservationIgnored let logger = Logger(subsystem: "nz.org.cons.EliteMonitor", category: "EliteJournal")
+
+  var container: ModelContainer
+  var context: ModelContext
 
   var events: [(Int, JournalEvent)] = []
 
@@ -56,6 +60,16 @@ final class EliteJournal {
   var kills: [Kill] = []
 
   public static let shared = EliteJournal()
+
+  init() {
+    let container = try! ModelContainer(for: MissionReward.self)
+    let context = ModelContext(container)
+
+    context.autosaveEnabled = true
+
+    self.context = context
+    self.container = container
+  }
 
   public func start() {
     Task { await self.monitor() }

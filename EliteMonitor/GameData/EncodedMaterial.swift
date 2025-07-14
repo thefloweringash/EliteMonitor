@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum EncodedMaterial: String, RawRepresentable, Decodable, Material, CaseIterable {
+enum EncodedMaterial: String, RawRepresentable, Codable, Material, CaseIterable {
   var asAnyMaterial: AnyMaterial { .encoded(self) }
 
   case adaptiveencryptors
