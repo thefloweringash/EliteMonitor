@@ -85,7 +85,7 @@ struct MaterialCell: View {
         false
       }
 
-      let emphasised = (emphasis.contains(.exceedingCap) && spaceConstrained) || (emphasis.contains(.withCapacity) && !full)
+      let emphasised = (emphasis.contains(.exceedingCap) && spaceConstrained) || (emphasis.contains(.withCapacity) && !full && !material.isMaxGrade!)
       let diminished = !emphasis.isEmpty && !emphasised
 
       if !diminished {

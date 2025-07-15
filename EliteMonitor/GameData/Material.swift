@@ -82,4 +82,12 @@ enum AnyMaterial: Hashable, Codable, Material, RawRepresentable {
     case let .encoded(x): x.rawValue
     }
   }
+
+  var isMaxGrade: Bool? {
+    switch self {
+    case let .raw(x): x.isMaxGrade
+    case let .manufactured(x): x.isMaxGrade
+    case let .encoded(x): x.isMaxGrade
+    }
+  }
 }

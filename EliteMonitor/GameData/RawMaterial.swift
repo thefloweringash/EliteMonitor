@@ -87,6 +87,8 @@ enum RawMaterial: String, RawRepresentable, Codable, Material, CaseIterable, Ide
     }
   }
 
+  var isMaxGrade: Bool? { grade.map { $0 == 4 } }
+
 //  var category: Int {
 //    switch self {
 //    case .carbon, .vanadium, .niobium, .yttrium: 1

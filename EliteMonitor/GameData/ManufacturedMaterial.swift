@@ -158,4 +158,6 @@ enum ManufacturedMaterial: String, RawRepresentable, Codable, Material, CaseIter
     case .wornshieldemitters: "material.manufactured.wornshieldemitters"
     }
   }
+
+  var isMaxGrade: Bool? { grade.map { $0 == 5 } }
 }

@@ -108,4 +108,6 @@ enum EncodedMaterial: String, RawRepresentable, Codable, Material, CaseIterable 
   var category: Int {
     1
   }
+
+  var isMaxGrade: Bool? { grade.map { $0 == 5 } }
 }
