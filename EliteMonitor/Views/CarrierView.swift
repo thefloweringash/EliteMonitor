@@ -44,6 +44,22 @@ struct CarrierView: View {
         var formatter = Date.FormatStyle().hour().minute().second()
         let _ = formatter.timeZone = .gmt
         Text("In Game Departure Time: \(formatter.format(departure))")
+
+        let discordTimestamp = departure.timeIntervalSince1970.formatted(
+          .number.precision(.fractionLength(0)).grouping(.never)
+        )
+
+        HStack {
+          Text("Discord Absolute Timestamp:")
+          Text(verbatim: "<t:\(discordTimestamp):f>")
+            .textSelection(.enabled)
+        }
+
+        HStack {
+          Text("Discord Relative Timestamp:")
+          Text(verbatim: "<t:\(discordTimestamp):R>")
+            .textSelection(.enabled)
+        }
       }
 
       if
