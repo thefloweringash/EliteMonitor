@@ -1,7 +1,6 @@
 import ArgumentParser
 import EliteJournal
 import Foundation
-import System
 
 @main
 struct EliteMonitorCLI: AsyncParsableCommand {
@@ -9,7 +8,7 @@ struct EliteMonitorCLI: AsyncParsableCommand {
   var directory: String
 
   mutating func run() async throws {
-    for try await (events, _) in EliteJournalEventStream.events(containerDirectory: FilePath(directory)) {
+    for try await (events, _) in EliteJournalEventStream.events(containerDirectory: directory) {
       for event in events {
         // print(String(describing: event))
         switch event.event {

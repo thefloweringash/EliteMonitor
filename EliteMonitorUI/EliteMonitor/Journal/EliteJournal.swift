@@ -17,7 +17,7 @@ import System
 final class EliteJournal {
   @ObservationIgnored let logger = Logger(subsystem: "nz.org.cons.EliteMonitor", category: "EliteJournal")
 
-  static var containerDirectory: FilePath {
+  static var containerDirectory: String {
     "/Applications/Steam-vk.app/Contents/SharedSupport/prefix/drive_c/users/Kegworks/Saved Games/Frontier Developments/Elite Dangerous"
   }
 

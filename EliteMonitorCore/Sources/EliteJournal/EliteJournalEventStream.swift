@@ -8,7 +8,7 @@
 import EliteFileUtils
 import EliteGameData
 import Foundation
-import System
+import SystemPackage
 
 public enum EliteJournalEventStream {
   private final class Handler: EliteJournalWatcherDelegate {
@@ -61,7 +61,15 @@ public enum EliteJournalEventStream {
   public typealias EventBundle = ([JournalEvent], Bool)
   public typealias EventStream = AsyncThrowingStream<EventBundle, any Error>
 
-  public static func events(containerDirectory: FilePath) -> EventStream {
+  public static func events(containerDirectory: String) -> EventStream {
+    events(containerDirectory: FilePath(containerDirectory))
+  }
+
+  public static func events(containerDirectory: URL) -> EventStream {
+    events(containerDirectory: FilePath(containerDirectory.path))
+  }
+
+  private static func events(containerDirectory: FilePath) -> EventStream {
     AsyncThrowingStream { continuation in
       let handler = Handler(continuation: continuation)
       let watcher = EliteJournalWatcher<Handler>(containerDirectory: containerDirectory, delegate: handler)

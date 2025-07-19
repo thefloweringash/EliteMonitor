@@ -7,8 +7,11 @@
 
 import Dispatch
 import Foundation
+import SystemPackage
+
+#if canImport(OSLog)
 import OSLog
-import System
+#endif
 
 public struct EventBatchContext {
   public let live: Bool
@@ -27,7 +30,9 @@ public protocol EliteJournalWatcherDelegate: AnyObject {
 private let queue = DispatchQueue(label: "nz.org.cons.elite-journal-events")
 
 public final class EliteJournalWatcher<Delegate: EliteJournalWatcherDelegate>: @unchecked Sendable {
+  #if canImport(OSLog)
   let logger = Logger(subsystem: "nz.org.cons.EliteMonitor", category: "EliteJournalWatcher")
+  #endif
 
   enum Errors: Error {
     case fileOpenFailed
@@ -39,7 +44,9 @@ public final class EliteJournalWatcher<Delegate: EliteJournalWatcherDelegate>: @
 
   private let buffer = NDJSONBuffer()
 
+  #if !os(Windows)
   private var containerChangeSource: (any DispatchSourceFileSystemObject)?
+  #endif
   private var journalChangeSource: (any DispatchSourceRead)?
 
   private var openJournal: (path: String, fd: FileDescriptor)?
@@ -54,6 +61,7 @@ public final class EliteJournalWatcher<Delegate: EliteJournalWatcherDelegate>: @
   }
 
   private func _startWatching() {
+    #if !os(Windows)
     let directoryFD: FileDescriptor
 
     do {
@@ -80,6 +88,7 @@ public final class EliteJournalWatcher<Delegate: EliteJournalWatcherDelegate>: @
     self.containerChangeSource = containerChangeSource
 
     containerChangeSource.activate()
+    #endif
 
     watchLatestJournal()
   }
@@ -89,8 +98,10 @@ public final class EliteJournalWatcher<Delegate: EliteJournalWatcherDelegate>: @
   }
 
   private func _stopWatching() {
+    #if !os(Windows)
     containerChangeSource?.cancel()
     containerChangeSource = nil
+    #endif
 
     journalChangeSource?.cancel()
     journalChangeSource = nil
@@ -102,7 +113,9 @@ public final class EliteJournalWatcher<Delegate: EliteJournalWatcherDelegate>: @
     let fileFD: FileDescriptor
     let path: String
 
+    #if canImport(OSLog)
     logger.debug("Directory changed, looking for new journal file")
+    #endif
 
     do {
       guard let latestJournal =
@@ -111,16 +124,20 @@ public final class EliteJournalWatcher<Delegate: EliteJournalWatcherDelegate>: @
           .sorted()
           .last
       else {
+        #if canImport(OSLog)
         logger.debug("No journal found, waiting for first journal")
+        #endif
         return
       }
 
       if let openJournal, openJournal.path == latestJournal {
+        #if canImport(OSLog)
         logger.debug("Latest journal already open, no-op")
+        #endif
         return
       }
 
-      fileFD = try FileDescriptor.open(containerDirectory.appending(latestJournal), .readOnly, options: .nonBlocking)
+      fileFD = try FileDescriptor.open(containerDirectory.appending(latestJournal), .readOnly)
       path = latestJournal
     } catch {
       delegate.onError(error: error)

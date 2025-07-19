@@ -25,8 +25,13 @@ var package = Package(
     "Localization",
     .default(enabledTraits: ["Localization"]),
   ],
+  dependencies: [
+    .package(url: "https://github.com/apple/swift-system", from: "1.4.0"),
+  ],
   targets: [
-    .target(name: "EliteFileUtils"),
+    .target(name: "EliteFileUtils", dependencies: [
+      .product(name: "SystemPackage", package: "swift-system"),
+    ]),
     .target(name: "EliteJournal", dependencies: ["EliteFileUtils", "EliteGameData"]),
     .target(name: "EliteGameData"),
   ],
