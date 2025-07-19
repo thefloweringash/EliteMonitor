@@ -13,12 +13,10 @@ public class NDJSONBuffer {
 
   init() {
     end = buffer.startIndex
-    print("buffer.init, end=\(end)")
   }
 
   public func clear() {
     end = buffer.startIndex
-    print("buffer.clear, end=\(end)")
   }
 
   public func fill(
@@ -26,38 +24,19 @@ public class NDJSONBuffer {
     onChunk: (Data) -> Void
   ) rethrows {
     while true {
-      #if DEBUG
-      print("fill step, end=\(end), buffer=\(buffer.endIndex)/\(buffer.count)")
-      #endif
-
       // We know we have no complete records, so fill our buffer
 
       // But out buffer might be full, and we have to progress
-      #if DEBUG
-      print("Checking if full end=\(end) buffer.endIndex=\(buffer.endIndex)")
-      #endif
       if end == buffer.endIndex {
         // TODO: this seems silly
         buffer += Data(count: buffer.count)
-        #if DEBUG
-        print("resized buffer to \(buffer.count)")
-        #endif
       }
 
       guard buffer[end...].withUnsafeMutableBytes({ buf in
         let result = try! read(buf)
-        #if DEBUG
-        print("read returned: \(result)")
-        #endif
         end = end.advanced(by: result)
-        #if DEBUG
-        print("end is now: \(end)")
-        #endif
         return result != 0
       }) else {
-        #if DEBUG
-        print("nothing read, finishing")
-        #endif
         return
       }
 
@@ -67,10 +46,6 @@ public class NDJSONBuffer {
         start < end,
         let newline = buffer[start..<end].firstIndex(of: 0x0A)
       {
-        #if DEBUG
-        print("chunk: \(start)...\(newline)")
-        #endif
-
         onChunk(buffer[start...newline])
         start = newline.advanced(by: 1)
       }
@@ -78,14 +53,8 @@ public class NDJSONBuffer {
       // Compact the remaining chunk into the buffer
       if start != buffer.startIndex {
         if start == end {
-          #if DEBUG
-          print("retaining chunk: \(start)...\(end) (trivial)")
-          #endif
           end = buffer.startIndex
         } else {
-          #if DEBUG
-          print("retaining chunk: \(start)...\(end) (copy)")
-          #endif
           let remaining = end - start
           buffer.withUnsafeMutableBytes { buf in
             let base = buf.baseAddress!
@@ -93,13 +62,6 @@ public class NDJSONBuffer {
           }
           end = remaining
         }
-        #if DEBUG
-        print("new end = \(end)")
-        #endif
-      } else {
-        #if DEBUG
-        print("no progress")
-        #endif
       }
     }
   }
