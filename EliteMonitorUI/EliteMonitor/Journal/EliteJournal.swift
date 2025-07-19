@@ -5,14 +5,21 @@
 //  Created by Andrew Childs on 2025/02/08.
 //
 
+import EliteGameData
+import EliteJournal
 import Foundation
 import OSLog
 import SwiftData
+import System
 
 @Observable
 @MainActor
 final class EliteJournal {
   @ObservationIgnored let logger = Logger(subsystem: "nz.org.cons.EliteMonitor", category: "EliteJournal")
+
+  static var containerDirectory: FilePath {
+    "/Applications/Steam-vk.app/Contents/SharedSupport/prefix/drive_c/users/Kegworks/Saved Games/Frontier Developments/Elite Dangerous"
+  }
 
   var container: ModelContainer
   var context: ModelContext
@@ -78,7 +85,7 @@ final class EliteJournal {
   private func monitor() async {
     do {
       var index = 0
-      for try await (batch, live) in EliteJournalWatcher.events() {
+      for try await (batch, live) in EliteJournalEventStream.events(containerDirectory: Self.containerDirectory) {
         logger.debug("got bundle of \(batch.count) events")
         for event in batch {
           handle(event, live: live)

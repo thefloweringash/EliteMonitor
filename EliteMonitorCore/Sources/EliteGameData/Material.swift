@@ -7,21 +7,24 @@
 
 import Foundation
 
-protocol Material: Decodable {
-  var localizedName: LocalizedStringResource { get }
+public protocol Material: Sendable, Decodable {
+  #if Localization
+  var localizedName: String { get }
+  #endif
+
   var grade: Int? { get }
   var asAnyMaterial: AnyMaterial { get }
 //  var category: Int { get }
 }
 
-extension Material {
+public extension Material {
   var cap: Int? {
     guard let grade else { return nil }
     return 350 - (50 * grade)
   }
 }
 
-enum AnyMaterial: Hashable, Codable, Material, RawRepresentable {
+public enum AnyMaterial: Hashable, Codable, Material, RawRepresentable {
   enum DecodeErrors: Error {
     case unknownMaterial(String)
   }
@@ -30,15 +33,17 @@ enum AnyMaterial: Hashable, Codable, Material, RawRepresentable {
   case manufactured(ManufacturedMaterial)
   case raw(RawMaterial)
 
-  var localizedName: LocalizedStringResource {
+  #if Localization
+  public var localizedName: String {
     switch self {
     case let .encoded(x): x.localizedName
     case let .raw(x): x.localizedName
     case let .manufactured(x): x.localizedName
     }
   }
+  #endif
 
-  var grade: Int? {
+  public var grade: Int? {
     switch self {
     case let .encoded(x): x.grade
     case let .raw(x): x.grade
@@ -46,7 +51,7 @@ enum AnyMaterial: Hashable, Codable, Material, RawRepresentable {
     }
   }
 
-  init?(rawValue: String) {
+  public init?(rawValue: String) {
     if let encoded = EncodedMaterial(rawValue: rawValue) {
       self = .encoded(encoded)
     } else if let manufactured = ManufacturedMaterial(rawValue: rawValue) {
@@ -58,7 +63,7 @@ enum AnyMaterial: Hashable, Codable, Material, RawRepresentable {
     }
   }
 
-  init(from decoder: Decoder) throws {
+  public init(from decoder: Decoder) throws {
     let svc = try decoder.singleValueContainer()
     let stringName = try svc.decode(String.self).lowercased()
 
@@ -68,14 +73,14 @@ enum AnyMaterial: Hashable, Codable, Material, RawRepresentable {
     self = value
   }
 
-  var asAnyMaterial: AnyMaterial { self }
+  public var asAnyMaterial: AnyMaterial { self }
 
-  func encode(to encoder: any Encoder) throws {
+  public func encode(to encoder: any Encoder) throws {
     var container = encoder.singleValueContainer()
     try container.encode(rawValue)
   }
 
-  var rawValue: String {
+  public var rawValue: String {
     switch self {
     case let .raw(x): x.rawValue
     case let .manufactured(x): x.rawValue
@@ -83,7 +88,7 @@ enum AnyMaterial: Hashable, Codable, Material, RawRepresentable {
     }
   }
 
-  var isMaxGrade: Bool? {
+  public var isMaxGrade: Bool? {
     switch self {
     case let .raw(x): x.isMaxGrade
     case let .manufactured(x): x.isMaxGrade

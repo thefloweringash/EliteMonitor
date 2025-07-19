@@ -5,6 +5,7 @@
 //  Created by Andrew Childs on 2025/02/09.
 //
 
+import EliteGameData
 import SwiftData
 import SwiftUI
 
@@ -17,7 +18,7 @@ struct MaterialTableRow: Identifiable {
   let g5: AnyMaterial?
 
   var id: MaterialGroup { group }
-  var name: LocalizedStringResource { group.localizedName }
+  var name: String { group.localizedName }
 
   init(
     _ group: MaterialGroup,

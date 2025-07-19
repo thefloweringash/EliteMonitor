@@ -5,6 +5,7 @@
 //  Created by Andrew Childs on 2025/07/13.
 //
 
+import EliteGameData
 import Foundation
 import SwiftData
 

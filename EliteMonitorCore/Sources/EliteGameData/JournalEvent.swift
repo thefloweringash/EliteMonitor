@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct JournalEvent: Decodable, Sendable {
-  let timestamp: Date
-  let event: Event
+public struct JournalEvent: Decodable, Sendable {
+  public let timestamp: Date
+  public let event: Event
 
   public init(from coder: Decoder) throws {
     let container = try coder.container(keyedBy: CodingKeys.self)
@@ -99,7 +99,7 @@ struct JournalEvent: Decodable, Sendable {
     case type = "event"
   }
 
-  enum Event {
+  public enum Event: Sendable {
     case materials(MaterialsDetails)
     case materialCollected(MaterialCollectedDetails)
     case missionCompleted(MissionCompletedDetails)
@@ -119,10 +119,12 @@ struct JournalEvent: Decodable, Sendable {
   }
 }
 
-struct MaterialsDetails: Decodable {
-  let raw: [RawMaterial: Int]
-  let encoded: [EncodedMaterial: Int]
-  let manufactured: [ManufacturedMaterial: Int]
+protocol JournalEventDetails: Sendable, Decodable {}
+
+public struct MaterialsDetails: JournalEventDetails {
+  public let raw: [RawMaterial: Int]
+  public let encoded: [EncodedMaterial: Int]
+  public let manufactured: [ManufacturedMaterial: Int]
 
   private enum CodingKeys: String, CodingKey {
     case raw = "Raw"
@@ -130,7 +132,7 @@ struct MaterialsDetails: Decodable {
     case manufactured = "Manufactured"
   }
 
-  init(from decoder: any Decoder) throws {
+  public init(from decoder: any Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
 
     let raw = try container.decode([MaterialCount].self, forKey: .raw)
@@ -144,16 +146,16 @@ struct MaterialsDetails: Decodable {
   }
 }
 
-struct MaterialCollectedDetails: Decodable {
-  enum MaterialCategory: String, RawRepresentable, Decodable {
+public struct MaterialCollectedDetails: JournalEventDetails {
+  public enum MaterialCategory: String, Sendable, RawRepresentable, Decodable {
     case raw = "Raw"
     case encoded = "Encoded"
     case manufactured = "Manufactured"
   }
 
-  let category: MaterialCategory
-  let name: AnyMaterial
-  let count: Int
+  public let category: MaterialCategory
+  public let name: AnyMaterial
+  public let count: Int
 
   private enum CodingKeys: String, CodingKey {
     case category = "Category"
@@ -213,9 +215,9 @@ struct MaterialCollectedDetails: Decodable {
 //  }
 // }
 
-struct MaterialCount: Decodable {
-  let name: RawMaterial
-  let count: Int
+public struct MaterialCount: JournalEventDetails {
+  public let name: RawMaterial
+  public let count: Int
 
   private enum CodingKeys: String, CodingKey {
     case name = "Name"
@@ -223,10 +225,10 @@ struct MaterialCount: Decodable {
   }
 }
 
-struct LocalizedMaterialCount<MaterialType: Material>: Decodable {
-  let name: MaterialType
-  let nameLocalized: String
-  let count: Int
+public struct LocalizedMaterialCount<MaterialType: Material>: JournalEventDetails {
+  public let name: MaterialType
+  public let nameLocalized: String
+  public let count: Int
 
   private enum CodingKeys: String, CodingKey {
     case name = "Name"
@@ -235,9 +237,9 @@ struct LocalizedMaterialCount<MaterialType: Material>: Decodable {
   }
 }
 
-struct DockedDetails: Decodable {
-  let stationName: String
-  let starSystem: String
+public struct DockedDetails: JournalEventDetails {
+  public let stationName: String
+  public let starSystem: String
 
   private enum CodingKeys: String, CodingKey {
     case stationName = "StationName"
@@ -245,16 +247,16 @@ struct DockedDetails: Decodable {
   }
 }
 
-struct UndockedDetails: Decodable {
-  let stationName: String
+public struct UndockedDetails: JournalEventDetails {
+  public let stationName: String
 
   private enum CodingKeys: String, CodingKey {
     case stationName = "StationName"
   }
 }
 
-struct CommanderDetails: Decodable {
-  let name: String
+public struct CommanderDetails: JournalEventDetails {
+  public let name: String
 
   private enum CodingKeys: String, CodingKey {
     case name = "Name"
@@ -271,10 +273,10 @@ struct CommanderDetails: Decodable {
 //  "BodyID": 0,
 //  "DepartureTime": "2025-03-30T04:19:10Z"
 // }
-struct CarrierJumpRequestDetails: Decodable {
-  let departureTime: Date
-  let system: String
-  let body: String?
+public struct CarrierJumpRequestDetails: JournalEventDetails {
+  public let departureTime: Date
+  public let system: String
+  public let body: String?
 
   enum CodingKeys: String, CodingKey {
     case departureTime = "DepartureTime"
@@ -283,10 +285,10 @@ struct CarrierJumpRequestDetails: Decodable {
   }
 }
 
-struct CarrierJumpDetails: Decodable {
-  let stationName: String
-  let system: String
-  let body: String
+public struct CarrierJumpDetails: JournalEventDetails {
+  public let stationName: String
+  public let system: String
+  public let body: String
 
   enum CodingKeys: String, CodingKey {
     case stationName = "StationName"
@@ -295,27 +297,27 @@ struct CarrierJumpDetails: Decodable {
   }
 }
 
-struct CarrierLocationDetails: Decodable {
-  let system: String
+public struct CarrierLocationDetails: JournalEventDetails {
+  public let system: String
 
   enum CodingKeys: String, CodingKey {
     case system = "StarSystem"
   }
 }
 
-struct CarrierStatsDetails: Decodable {
-  let name: String
-  let callsign: String
-  let fuelLevel: Int
+public struct CarrierStatsDetails: JournalEventDetails {
+  public let name: String
+  public let callsign: String
+  public let fuelLevel: Int
 
-  struct SpaceUsage: Decodable {
-    let totalCapacity: Int
-    let crew: Int
-    let cargo: Int
-    let cargoSpaceReserved: Int
-    let shipPacks: Int
-    let modulePacks: Int
-    let freeSpace: Int
+  public struct SpaceUsage: Decodable, Sendable {
+    public let totalCapacity: Int
+    public let crew: Int
+    public let cargo: Int
+    public let cargoSpaceReserved: Int
+    public let shipPacks: Int
+    public let modulePacks: Int
+    public let freeSpace: Int
 
     enum CodingKeys: String, CodingKey {
       case totalCapacity = "TotalCapacity"
@@ -326,9 +328,19 @@ struct CarrierStatsDetails: Decodable {
       case modulePacks = "ModulePacks"
       case freeSpace = "FreeSpace"
     }
+
+    public init(totalCapacity: Int, crew: Int, cargo: Int, cargoSpaceReserved: Int, shipPacks: Int, modulePacks: Int, freeSpace: Int) {
+      self.totalCapacity = totalCapacity
+      self.crew = crew
+      self.cargo = cargo
+      self.cargoSpaceReserved = cargoSpaceReserved
+      self.shipPacks = shipPacks
+      self.modulePacks = modulePacks
+      self.freeSpace = freeSpace
+    }
   }
 
-  let spaceUsage: SpaceUsage
+  public let spaceUsage: SpaceUsage
 
   enum CodingKeys: String, CodingKey {
     case name = "Name"
@@ -336,15 +348,22 @@ struct CarrierStatsDetails: Decodable {
     case fuelLevel = "FuelLevel"
     case spaceUsage = "SpaceUsage"
   }
+
+  public init(name: String, callsign: String, fuelLevel: Int, spaceUsage: SpaceUsage) {
+    self.name = name
+    self.callsign = callsign
+    self.fuelLevel = fuelLevel
+    self.spaceUsage = spaceUsage
+  }
 }
 
-struct ShipTargetedDetails: Decodable {
-  let targetLocked: Bool
-  let ship: String?
-  let bounty: Int?
-  let pilotRank: String?
-  let faction: String?
-  let legalStatus: String?
+public struct ShipTargetedDetails: JournalEventDetails {
+  public let targetLocked: Bool
+  public let ship: String?
+  public let bounty: Int?
+  public let pilotRank: String?
+  public let faction: String?
+  public let legalStatus: String?
 
   enum CodingKeys: String, CodingKey {
     case targetLocked = "TargetLocked"
@@ -357,11 +376,11 @@ struct ShipTargetedDetails: Decodable {
 }
 
 // { "timestamp":"2025-07-03T11:58:41Z", "event":"Bounty", "Rewards":[ { "Faction":"Earls of Anana", "Reward":19600 } ], "PilotName":"$npc_name_decorate:#name=Che;", "PilotName_Localised":"Che", "Target":"sidewinder", "TotalReward":19600, "VictimFaction":"Anana Brotherhood" }
-struct BountyDetails: Decodable {
-  let pilotName: String
-  let target: String
-  let totalReward: Int
-  let victimFaction: String
+public struct BountyDetails: JournalEventDetails {
+  public let pilotName: String
+  public let target: String
+  public let totalReward: Int
+  public let victimFaction: String
 
   enum CodingKeys: String, CodingKey {
     case pilotName = "PilotName"
@@ -372,18 +391,18 @@ struct BountyDetails: Decodable {
 }
 
 // { "timestamp":"2025-07-09T12:18:07Z", "event":"MissionCompleted", "Faction":"HIP 90112 Jet Central Corp.", "Name":"Mission_MassacreWing_name", "LocalisedName":"Kill Anana Brotherhood faction Pirates", "MissionID":1021894599, "TargetType":"$MissionUtil_FactionTag_Pirate;", "TargetType_Localised":"Pirates", "TargetFaction":"Anana Brotherhood", "KillCount":45, "DestinationSystem":"Anana", "DestinationStation":"Yamazaki Base", "Reward":16977836, "MaterialsReward":[ { "Name":"Polonium", "Category":"$MICRORESOURCE_CATEGORY_Elements;", "Category_Localised":"Elements", "Count":12 } ], "FactionEffects":[ { "Faction":"Anana Brotherhood", "Effects":[ { "Effect":"$MISSIONUTIL_Interaction_Summary_EP_up;", "Effect_Localised":"The economic status of $#MinorFaction; has improved in the $#System; system.", "Trend":"UpGood" } ], "Influence":[ { "SystemAddress":58144730139600, "Trend":"DownBad", "Influence":"+" } ], "ReputationTrend":"DownBad", "Reputation":"+" }, { "Faction":"HIP 90112 Jet Central Corp.", "Effects":[ { "Effect":"$MISSIONUTIL_Interaction_Summary_EP_up;", "Effect_Localised":"The economic status of $#MinorFaction; has improved in the $#System; system.", "Trend":"UpGood" } ], "Influence":[ { "SystemAddress":83852497650, "Trend":"UpGood", "Influence":"++" } ], "ReputationTrend":"UpGood", "Reputation":"++" } ] }
-struct MissionCompletedDetails: Decodable {
-  let materialsReward: [MaterialReward]?
-  let missionID: Int
+public struct MissionCompletedDetails: JournalEventDetails {
+  public let materialsReward: [MaterialReward]?
+  public let missionID: Int
 
   enum CodingKeys: String, CodingKey {
     case materialsReward = "MaterialsReward"
     case missionID = "MissionID"
   }
 
-  struct MaterialReward: Decodable {
-    let name: AnyMaterial
-    let count: Int
+  public struct MaterialReward: Decodable, Sendable {
+    public let name: AnyMaterial
+    public let count: Int
 
     enum CodingKeys: String, CodingKey {
       case name = "Name"
@@ -394,18 +413,18 @@ struct MissionCompletedDetails: Decodable {
 
 // { "timestamp":"2025-07-10T13:10:36Z", "event":"MaterialTrade", "MarketID":3230812928, "TraderType":"encoded", "Paid":{ "Material":"securityfirmware", "Material_Localised":"Security Firmware Patch", "Category":"Encoded", "Quantity":1 }, "Received":{ "Material":"industrialfirmware", "Material_Localised":"Cracked Industrial Firmware", "Category":"Encoded", "Quantity":3 } }
 
-struct MaterialTradeDetails: Decodable {
-  let paid: MaterialQuantity
-  let received: MaterialQuantity
+public struct MaterialTradeDetails: JournalEventDetails {
+  public let paid: MaterialQuantity
+  public let received: MaterialQuantity
 
   enum CodingKeys: String, CodingKey {
     case paid = "Paid"
     case received = "Received"
   }
 
-  struct MaterialQuantity: Decodable {
-    let material: AnyMaterial
-    let quantity: Int
+  public struct MaterialQuantity: Decodable, Sendable {
+    public let material: AnyMaterial
+    public let quantity: Int
 
     enum CodingKeys: String, CodingKey {
       case material = "Material"
@@ -415,16 +434,16 @@ struct MaterialTradeDetails: Decodable {
 }
 
 // { "timestamp":"2025-07-13T12:23:20Z", "event":"EngineerCraft", "Slot":"PowerPlant", "Module":"int_powerplant_size6_class5", "Ingredients":[ { "Name":"tungsten", "Count":1 }, { "Name":"compoundshielding", "Name_Localised":"Compound Shielding", "Count":1 }, { "Name":"fedcorecomposites", "Name_Localised":"Core Dynamics Composites", "Count":1 } ], "Engineer":"Hera Tani", "EngineerID":300090, "BlueprintID":128673764, "BlueprintName":"PowerPlant_Armoured", "Level":5, "Quality":0.200000, "Modifiers":[ { "Label":"Mass", "Value":24.000000, "OriginalValue":20.000000, "LessIsGood":1 }, { "Label":"Integrity", "Value":252.959991, "OriginalValue":124.000000, "LessIsGood":0 }, { "Label":"PowerCapacity", "Value":27.820801, "OriginalValue":25.200001, "LessIsGood":0 }, { "Label":"HeatEfficiency", "Value":0.358400, "OriginalValue":0.400000, "LessIsGood":1 } ] }
-struct EngineerCraftDetails: Decodable {
-  let ingredients: [Ingredient]
+public struct EngineerCraftDetails: JournalEventDetails {
+  public let ingredients: [Ingredient]
 
   enum CodingKeys: String, CodingKey {
     case ingredients = "Ingredients"
   }
 
-  struct Ingredient: Decodable {
-    let name: AnyMaterial
-    let count: Int
+  public struct Ingredient: Decodable, Sendable {
+    public let name: AnyMaterial
+    public let count: Int
 
     enum CodingKeys: String, CodingKey {
       case name = "Name"

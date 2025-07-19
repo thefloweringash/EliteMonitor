@@ -5,7 +5,10 @@
 //  Created by Andrew Childs on 2025/07/13.
 //
 
+import EliteGameData
 import SwiftUI
+
+import protocol EliteGameData.Material
 
 struct MaterialSelectorTextField: NSViewRepresentable {
   let material: Binding<AnyMaterial?>
@@ -25,10 +28,10 @@ struct MaterialSelectorTextField: NSViewRepresentable {
     func textField(_ textField: NSTextField, provideUpdatedSuggestions responseHandler: @escaping (ItemResponse) -> Void) {
       func matching<T: Material & CaseIterable>(_ title: LocalizedStringResource, _ type: T.Type) -> ItemSection {
         let items = T.allCases.compactMap { m -> Item? in
-          guard String(localized: m.localizedName).localizedCaseInsensitiveContains(textField.stringValue) else { return nil }
+          guard m.localizedName.localizedCaseInsensitiveContains(textField.stringValue) else { return nil }
           return Item(
             representedValue: m.asAnyMaterial,
-            title: String(localized: m.localizedName)
+            title: m.localizedName
           )
         }
 
@@ -45,7 +48,7 @@ struct MaterialSelectorTextField: NSViewRepresentable {
     }
 
     func textField(_ textField: NSTextField, didSelect item: Item) {
-      textField.stringValue = String(localized: item.representedValue.localizedName)
+      textField.stringValue = item.representedValue.localizedName
       onSubmit()
     }
 
@@ -57,7 +60,7 @@ struct MaterialSelectorTextField: NSViewRepresentable {
         return
       }
 
-      textField.stringValue = String(localized: material.localizedName)
+      textField.stringValue = material.localizedName
       self.material.wrappedValue = material
     }
 
@@ -82,7 +85,7 @@ struct MaterialSelectorTextField: NSViewRepresentable {
 
     private func findMaterial<T: Material & CaseIterable>(_ string: String, ofType: T.Type) -> AnyMaterial? {
       T.allCases.first { m in
-        String(localized: m.localizedName).localizedCaseInsensitiveContains(string)
+        m.localizedName.localizedCaseInsensitiveContains(string)
       }?.asAnyMaterial
     }
   }
@@ -94,7 +97,7 @@ struct MaterialSelectorTextField: NSViewRepresentable {
   func makeNSView(context: Context) -> NSTextField {
     let view = NSTextField()
     if let material = material.wrappedValue {
-      view.stringValue = String(localized: material.localizedName)
+      view.stringValue = material.localizedName
     }
 
     view.suggestionsDelegate = context.coordinator
@@ -107,7 +110,7 @@ struct MaterialSelectorTextField: NSViewRepresentable {
     context.coordinator.onSubmit = onSubmit
 
     let newStringValue = if let material = material.wrappedValue {
-      String(localized: material.localizedName)
+      material.localizedName
     } else {
       ""
     }

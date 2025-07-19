@@ -6,6 +6,7 @@
 //
 
 import Charts
+import EliteGameData
 import SwiftUI
 
 struct CarrierSpaceView: View {

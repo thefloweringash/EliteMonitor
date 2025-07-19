@@ -13,10 +13,12 @@ public class NDJSONBuffer {
 
   init() {
     end = buffer.startIndex
+    print("buffer.init, end=\(end)")
   }
 
   public func clear() {
     end = buffer.startIndex
+    print("buffer.clear, end=\(end)")
   }
 
   public func fill(
@@ -31,6 +33,9 @@ public class NDJSONBuffer {
       // We know we have no complete records, so fill our buffer
 
       // But out buffer might be full, and we have to progress
+      #if DEBUG
+      print("Checking if full end=\(end) buffer.endIndex=\(buffer.endIndex)")
+      #endif
       if end == buffer.endIndex {
         // TODO: this seems silly
         buffer += Data(count: buffer.count)
@@ -41,7 +46,13 @@ public class NDJSONBuffer {
 
       guard buffer[end...].withUnsafeMutableBytes({ buf in
         let result = try! read(buf)
+        #if DEBUG
+        print("read returned: \(result)")
+        #endif
         end = end.advanced(by: result)
+        #if DEBUG
+        print("end is now: \(end)")
+        #endif
         return result != 0
       }) else {
         #if DEBUG
