@@ -161,6 +161,7 @@ struct IncomingMaterials: View {
         })
         .frame(minWidth: 200)
         .focused($focusedInputField, equals: .material)
+        .layoutPriority(1)
         // OnSubmit cannot work here:
         // https://christiantietze.de/posts/2023/06/swiftui-onsubmit/
         //  .onSubmit {
