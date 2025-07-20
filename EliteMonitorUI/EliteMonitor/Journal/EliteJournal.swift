@@ -41,16 +41,6 @@ final class EliteJournal {
   var commander: String?
   var location: Location?
 
-  enum CarrierJumpState {
-    case scheduled(at: Date, destination: BodyLocation)
-    case completed(at: Date, estimatedCooldownEnd: Date)
-  }
-
-  struct BodyLocation {
-    let system: String
-    let body: String?
-  }
-
   var carrierStats: CarrierStatsDetails?
   var carrierLocation: BodyLocation?
   var carrierJump: CarrierJumpState?
@@ -85,7 +75,7 @@ final class EliteJournal {
   private func monitor() async {
     do {
       var index = 0
-      for try await (batch, live) in EliteJournalEventStream.events(containerDirectory: Self.containerDirectory) {
+      for try await (batch, live) in EliteJournalEventStream.allEvents(containerDirectory: Self.containerDirectory) {
         logger.debug("got bundle of \(batch.count) events")
         for event in batch {
           handle(event, live: live)

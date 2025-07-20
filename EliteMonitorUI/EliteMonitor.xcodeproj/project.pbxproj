@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		485262602D57BBAF00075845 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 4852625F2D57BBAF00075845 /* Localizable.xcstrings */; };
 		489FE5132D9908DD00423EF3 /* Pushover in Frameworks */ = {isa = PBXBuildFile; productRef = 489FE5122D9908DD00423EF3 /* Pushover */; };
+		48AE9E5F2E32846B00E69440 /* Puppy in Frameworks */ = {isa = PBXBuildFile; productRef = 48AE9E5E2E32846B00E69440 /* Puppy */; };
 		48EAEC942E2B8F8400E3E5D2 /* EliteFileUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 48EAEC932E2B8F8400E3E5D2 /* EliteFileUtils */; };
 		48EAEC962E2B8F8400E3E5D2 /* EliteGameData in Frameworks */ = {isa = PBXBuildFile; productRef = 48EAEC952E2B8F8400E3E5D2 /* EliteGameData */; };
 		48EAED5A2E2B9CE800E3E5D2 /* EliteJournal in Frameworks */ = {isa = PBXBuildFile; productRef = 48EAED592E2B9CE800E3E5D2 /* EliteJournal */; };
@@ -34,6 +35,7 @@
 			files = (
 				48EAEC962E2B8F8400E3E5D2 /* EliteGameData in Frameworks */,
 				48EAEC942E2B8F8400E3E5D2 /* EliteFileUtils in Frameworks */,
+				48AE9E5F2E32846B00E69440 /* Puppy in Frameworks */,
 				48EAED5A2E2B9CE800E3E5D2 /* EliteJournal in Frameworks */,
 				489FE5132D9908DD00423EF3 /* Pushover in Frameworks */,
 			);
@@ -91,6 +93,7 @@
 				48EAEC932E2B8F8400E3E5D2 /* EliteFileUtils */,
 				48EAEC952E2B8F8400E3E5D2 /* EliteGameData */,
 				48EAED592E2B9CE800E3E5D2 /* EliteJournal */,
+				48AE9E5E2E32846B00E69440 /* Puppy */,
 			);
 			productName = EliteMonitor;
 			productReference = 4852623B2D5719E200075845 /* EliteMonitor.app */;
@@ -123,6 +126,7 @@
 			packageReferences = (
 				489FE5112D9908DD00423EF3 /* XCRemoteSwiftPackageReference "pushover" */,
 				48EAEC922E2B8F8400E3E5D2 /* XCLocalSwiftPackageReference "../EliteMonitorCore" */,
+				48AE9E5D2E32846B00E69440 /* XCRemoteSwiftPackageReference "Puppy" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4852623C2D5719E200075845 /* Products */;
@@ -365,6 +369,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		48AE9E5D2E32846B00E69440 /* XCRemoteSwiftPackageReference "Puppy" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sushichop/Puppy";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -372,6 +384,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 489FE5112D9908DD00423EF3 /* XCRemoteSwiftPackageReference "pushover" */;
 			productName = Pushover;
+		};
+		48AE9E5E2E32846B00E69440 /* Puppy */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 48AE9E5D2E32846B00E69440 /* XCRemoteSwiftPackageReference "Puppy" */;
+			productName = Puppy;
 		};
 		48EAEC932E2B8F8400E3E5D2 /* EliteFileUtils */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -8,77 +8,55 @@
 import EliteFileUtils
 import EliteGameData
 import Foundation
+import Synchronization
 import SystemPackage
 
-public enum EliteJournalEventStream {
-  private final class Handler: EliteJournalWatcherDelegate {
-    let continuation: EventStream.Continuation
+public typealias EventBundle = ([JournalEvent], Bool)
+public typealias EventStream = AsyncThrowingStream<EventBundle, any Error>
 
-    init(continuation: EventStream.Continuation) {
-      self.continuation = continuation
-    }
-
-    func onEventBatch(context: EventBatchContext) -> any EventBatchReceiver {
-      BatchReceiver(live: context.live, continuation: continuation)
-    }
-
-    func onError(error: any Error) {
-      continuation.finish(throwing: error)
-    }
+public final class EliteJournalEventStream: Sendable {
+  // All events from only the latest journal
+  public static func allEvents(containerDirectory: String) -> EventStream {
+    allEvents(containerDirectory: FilePath(containerDirectory))
   }
 
-  private struct BatchReceiver: EventBatchReceiver {
-    let live: Bool
-    let continuation: EventStream.Continuation
-
-    let decoder: JSONDecoder
-    var events: [JournalEvent]
-
-    init(live: Bool, continuation: EventStream.Continuation) {
-      self.live = live
-      self.continuation = continuation
-
-      decoder = JSONDecoder()
-      decoder.dateDecodingStrategy = .iso8601
-
-      events = []
-    }
-
-    mutating func onEvent(_ data: Data) {
-      do {
-        let eventData = try decoder.decode(JournalEvent.self, from: data)
-        events.append(eventData)
-      } catch {
-        fatalError()
-      }
-    }
-
-    mutating func commit() {
-      continuation.yield((events, live))
-    }
+  // All events from only the latest journal
+  public static func allEvents(containerDirectory: URL) -> EventStream {
+    allEvents(containerDirectory: FilePath(containerDirectory.path))
   }
 
-  public typealias EventBundle = ([JournalEvent], Bool)
-  public typealias EventStream = AsyncThrowingStream<EventBundle, any Error>
-
-  public static func events(containerDirectory: String) -> EventStream {
-    events(containerDirectory: FilePath(containerDirectory))
-  }
-
-  public static func events(containerDirectory: URL) -> EventStream {
-    events(containerDirectory: FilePath(containerDirectory.path))
-  }
-
-  private static func events(containerDirectory: FilePath) -> EventStream {
+  // All events from only the latest journal
+  private static func allEvents(containerDirectory: FilePath) -> EventStream {
     AsyncThrowingStream { continuation in
-      let handler = Handler(continuation: continuation)
-      let watcher = EliteJournalWatcher<Handler>(containerDirectory: containerDirectory, delegate: handler)
+      let handler = SingleWatcherContainerSink(continuation: continuation)
+      let watcher = EliteJournalContainerWatcher(
+        containerDirectory: containerDirectory,
+        sink: handler
+      )
 
       continuation.onTermination = { _ in
         watcher.stopWatching()
       }
-
-      watcher.startWatching()
     }
+  }
+
+  private let watcher: EliteJournalContainerWatcher<MultiWatcherContainerSink>
+  private let sink: MultiWatcherContainerSink
+
+  public convenience init(containerDirectory: String, commanders: [String]) {
+    self.init(containerDirectory: FilePath(containerDirectory), commanders: commanders)
+  }
+
+  public convenience init(containerDirectory: URL, commanders: [String]) {
+    self.init(containerDirectory: FilePath(containerDirectory.path), commanders: commanders)
+  }
+
+  private init(containerDirectory: FilePath, commanders: [String]) {
+    sink = .init()
+    watcher = .init(containerDirectory: containerDirectory, requestedCommanders: commanders, sink: sink)
+  }
+
+  public func streamForCommander(_ commander: String) -> EventStream {
+    sink.streamForCommander(commander)
   }
 }

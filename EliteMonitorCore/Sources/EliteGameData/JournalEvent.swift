@@ -9,6 +9,7 @@ import Foundation
 
 public struct JournalEvent: Decodable, Sendable {
   public let timestamp: Date
+  public let eventName: String
   public let event: Event
 
   public init(from coder: Decoder) throws {
@@ -16,6 +17,7 @@ public struct JournalEvent: Decodable, Sendable {
     timestamp = try container.decode(Date.self, forKey: .timestamp)
 
     let type = try container.decode(String.self, forKey: .type)
+    eventName = type
 
     switch type {
       // Disabled while we think about how to represent materials, because there are materials that we don't know about.
@@ -286,7 +288,7 @@ public struct CarrierJumpRequestDetails: JournalEventDetails {
 }
 
 public struct CarrierJumpDetails: JournalEventDetails {
-  public let stationName: String
+  public let stationName: String?
   public let system: String
   public let body: String
 

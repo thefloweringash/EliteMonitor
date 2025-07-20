@@ -6,7 +6,7 @@ import PackageDescription
 var package = Package(
   name: "EliteMonitorCore",
   defaultLocalization: "en",
-  platforms: [.macOS(.v14)],
+  platforms: [.macOS(.v15)],
   products: [
     .library(
       name: "EliteGameData",
@@ -27,10 +27,12 @@ var package = Package(
   ],
   dependencies: [
     .package(url: "https://github.com/apple/swift-system", from: "1.4.0"),
+    .package(url: "https://github.com/apple/swift-log", from: "1.6.0"),
   ],
   targets: [
     .target(name: "EliteFileUtils", dependencies: [
       .product(name: "SystemPackage", package: "swift-system"),
+      .product(name: "Logging", package: "swift-log"),
     ]),
     .target(name: "EliteJournal", dependencies: ["EliteFileUtils", "EliteGameData"]),
     .target(name: "EliteGameData"),

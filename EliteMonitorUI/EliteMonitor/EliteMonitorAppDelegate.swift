@@ -6,9 +6,21 @@
 //
 
 import AppKit
+import Logging
+import Puppy
 
 public final class EliteMonitorAppDelegate: NSObject, NSApplicationDelegate {
   public func applicationDidFinishLaunching(_ notification: Notification) {
+    let puppy = Puppy(
+      loggers: [OSLogger("nz.org.cons.EliteMonitor")],
+    )
+    LoggingSystem.bootstrap {
+      var handler = PuppyLogHandler(label: $0, puppy: puppy)
+      // Set the logging level.
+      handler.logLevel = .trace
+      return handler
+    }
+
     EliteJournal.shared.start()
   }
 }

@@ -1,6 +1,24 @@
 {
-  "originHash" : "27b8bd4753b84cc6de52163493401cd31179fa713df8c557aa292ca38a4d8f35",
+  "originHash" : "256fa128ecc6228ae5673807e5e7079178e1d491a7d79f0025d31dc5e682cb92",
   "pins" : [
+    {
+      "identity" : "puppy",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sushichop/Puppy",
+      "state" : {
+        "revision" : "80ebe6ab25fb7050904647cb96f6ad7bee77bad6",
+        "version" : "0.9.0"
+      }
+    },
+    {
+      "identity" : "pushover",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kiliankoe/pushover",
+      "state" : {
+        "revision" : "17caffad643a16c8f896936c196c6dcf194408a9",
+        "version" : "1.0.0"
+      }
+    },
     {
       "identity" : "swift-argument-parser",
       "kind" : "remoteSourceControl",
@@ -8,6 +26,15 @@
       "state" : {
         "revision" : "309a47b2b1d9b5e991f36961c983ecec72275be3",
         "version" : "1.6.1"
+      }
+    },
+    {
+      "identity" : "swift-log",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-log",
+      "state" : {
+        "revision" : "3d8596ed08bd13520157f0355e35caed215ffbfa",
+        "version" : "1.6.3"
       }
     },
     {
