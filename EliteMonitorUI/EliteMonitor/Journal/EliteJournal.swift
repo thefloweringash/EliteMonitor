@@ -17,10 +17,6 @@ import System
 final class EliteJournal {
   @ObservationIgnored let logger = Logger(subsystem: "nz.org.cons.EliteMonitor", category: "EliteJournal")
 
-  static var containerDirectory: String {
-    "/Applications/Steam-vk.app/Contents/SharedSupport/prefix/drive_c/users/Kegworks/Saved Games/Frontier Developments/Elite Dangerous"
-  }
-
   var container: ModelContainer
   var context: ModelContext
 
@@ -34,6 +30,9 @@ final class EliteJournal {
     case docked(station: String, system: String)
     case undocked(system: String)
   }
+
+  @ObservationIgnored
+  var journalMonitorTask: Task<Void, Never>?
 
   @ObservationIgnored
   var jumpNotifyTask: Task<Void, Never>?
@@ -68,14 +67,20 @@ final class EliteJournal {
     self.container = container
   }
 
-  public func start() {
-    Task { await self.monitor() }
+  public func start(containerDirectory: URL) {
+    journalMonitorTask?.cancel()
+    journalMonitorTask = Task { await self.monitor(containerDirectory: containerDirectory) }
   }
 
-  private func monitor() async {
+  private func monitor(containerDirectory: URL) async {
     do {
+      let release = containerDirectory.startAccessingSecurityScopedResource()
+      defer {
+        if release { containerDirectory.stopAccessingSecurityScopedResource() }
+      }
+
       var index = 0
-      for try await (batch, live) in EliteJournalEventStream.allEvents(containerDirectory: Self.containerDirectory) {
+      for try await (batch, live) in EliteJournalEventStream.allEvents(containerDirectory: containerDirectory) {
         logger.debug("got bundle of \(batch.count) events")
         for event in batch {
           handle(event, live: live)
@@ -87,7 +92,6 @@ final class EliteJournal {
       }
     } catch {
       logger.error("Event stream failed")
-      fatalError(error.localizedDescription)
     }
   }
 

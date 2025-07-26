@@ -17,5 +17,9 @@ struct EliteMonitorApp: App {
     }
     .environment(EliteJournal.shared)
     .modelContext(EliteJournal.shared.context)
+    .commands {
+      SidebarCommands()
+      JournalCommands()
+    }
   }
 }

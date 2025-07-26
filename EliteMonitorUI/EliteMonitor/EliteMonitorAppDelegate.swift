@@ -21,6 +21,9 @@ public final class EliteMonitorAppDelegate: NSObject, NSApplicationDelegate {
       return handler
     }
 
-    EliteJournal.shared.start()
+    // TODO: first-use onboarding
+    if let url = JournalAccess.getContainerDirectory() {
+      EliteJournal.shared.start(containerDirectory: url)
+    }
   }
 }
